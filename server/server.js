@@ -28,7 +28,11 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: [
+    process.env.CLIENT_URL || 'http://localhost:3000',
+    'https://earth-observation-system-ygrk.vercel.app',
+    'https://earth-observation-system-ygrk-*.vercel.app' // For preview deployments
+  ],
   credentials: true
 }));
 
@@ -104,6 +108,24 @@ const authenticateToken = (req, res, next) => {
 };
 
 // ==================== Routes ====================
+
+// Root route for health check
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Earth Observation System API Server',
+    status: 'running',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    endpoints: [
+      '/api/auth/register',
+      '/api/auth/login',
+      '/api/auth/verify-otp',
+      '/api/flights',
+      '/api/agriculture/*',
+      '/api/health'
+    ]
+  });
+});
 
 // Register
 app.post('/api/auth/register', async (req, res) => {
