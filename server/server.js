@@ -580,7 +580,7 @@ async function getAccessToken() {
 // Function to make authenticated API request
 async function makeAuthenticatedRequest(url) {
     return new Promise(async (resolve, reject) => {
-        const timeout = 15000; // 15 second timeout
+        const timeout = 8000; // Reduced timeout to 8 seconds for faster fallback
         let requestTimeout;
         
         try {
@@ -977,6 +977,20 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+// Mock flights endpoint for testing
+app.get('/api/flights/mock', (req, res) => {
+    console.log('🎭 Generating mock flight data for testing...');
+    const mockFlights = generateMockFlights();
+    res.json({
+        success: true,
+        flights: mockFlights,
+        count: mockFlights.length,
+        timestamp: new Date().toISOString(),
+        source: 'mock',
+        auth_method: 'none'
+    });
+});
+
 // API info endpoint
 app.get('/api/info', (req, res) => {
     res.json({
@@ -985,6 +999,7 @@ app.get('/api/info', (req, res) => {
         description: 'Real-time flight tracking using OpenSky Network API with hybrid authentication',
         endpoints: {
             '/api/flights': 'Get all current flights',
+            '/api/flights/mock': 'Get mock flight data for testing',
             '/api/flights/bounds': 'Get flights within bounding box (requires lamin, lomin, lamax, lomax query params)',
             '/api/health': 'Health check',
             '/api/info': 'API information'
