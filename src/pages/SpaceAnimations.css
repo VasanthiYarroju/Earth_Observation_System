@@ -342,3 +342,438 @@
     transform: translateY(-5px) translateX(-50%);
   }
 }
+
+/* =================================
+   RESPONSIVE DESIGN FOR ANIMATIONS
+   ================================= */
+
+/* Large tablets and small laptops */
+@media (max-width: 1024px) {
+  .floating-planet {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .planet-1 {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .planet-2 {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .planet-3 {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .nebula {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .nebula-3 {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .nebula-4 {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .shooting-star {
+    width: 120px;
+  }
+  
+  .shooting-star:before {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .globe-glow {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .floating-planet {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .planet-1 {
+    width: 40px;
+    height: 40px;
+    top: 20%;
+    right: 5%;
+  }
+  
+  .planet-2 {
+    width: 30px;
+    height: 30px;
+    bottom: 25%;
+    left: 5%;
+  }
+  
+  .planet-3 {
+    width: 20px;
+    height: 20px;
+    top: 65%;
+    right: 10%;
+  }
+  
+  .nebula {
+    width: 200px;
+    height: 200px;
+    filter: blur(30px);
+  }
+  
+  .nebula-1 {
+    top: 15%;
+    left: 15%;
+  }
+  
+  .nebula-2 {
+    bottom: 15%;
+    right: 10%;
+  }
+  
+  .nebula-3 {
+    width: 150px;
+    height: 150px;
+    top: 65%;
+    left: 10%;
+  }
+  
+  .nebula-4 {
+    width: 250px;
+    height: 250px;
+    top: 45%;
+    right: 35%;
+  }
+  
+  .shooting-star {
+    width: 100px;
+  }
+  
+  .shooting-star:before {
+    width: 6px;
+    height: 6px;
+    box-shadow: 0 0 10px 1px white;
+  }
+  
+  .stars,
+  .stars2,
+  .stars3 {
+    opacity: 0.7;
+  }
+  
+  .stars {
+    background-size: 200px 200px;
+  }
+  
+  .stars2 {
+    background-size: 80px 80px;
+  }
+  
+  .stars3 {
+    background-size: 140px 140px;
+  }
+  
+  .globe-glow {
+    width: 300px;
+    height: 300px;
+    filter: blur(20px);
+  }
+  
+  .space-section-bg::before {
+    background-size: 150px 150px;
+    opacity: 0.25;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .floating-planet {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .planet-1 {
+    width: 30px;
+    height: 30px;
+    top: 25%;
+    right: 3%;
+  }
+  
+  .planet-2 {
+    width: 25px;
+    height: 25px;
+    bottom: 30%;
+    left: 3%;
+  }
+  
+  .planet-3 {
+    width: 15px;
+    height: 15px;
+    top: 70%;
+    right: 8%;
+  }
+  
+  .nebula {
+    width: 150px;
+    height: 150px;
+    filter: blur(25px);
+    opacity: 0.1;
+  }
+  
+  .nebula-1 {
+    top: 20%;
+    left: 10%;
+  }
+  
+  .nebula-2 {
+    bottom: 20%;
+    right: 8%;
+  }
+  
+  .nebula-3 {
+    width: 100px;
+    height: 100px;
+    top: 70%;
+    left: 8%;
+  }
+  
+  .nebula-4 {
+    width: 180px;
+    height: 180px;
+    top: 50%;
+    right: 30%;
+  }
+  
+  .shooting-star {
+    width: 80px;
+    height: 1px;
+  }
+  
+  .shooting-star:before {
+    width: 5px;
+    height: 5px;
+    box-shadow: 0 0 8px 1px white;
+  }
+  
+  .shooting-star:nth-child(1) {
+    top: 15%;
+    animation-duration: 6s;
+  }
+  
+  .shooting-star:nth-child(2) {
+    top: 40%;
+    animation-duration: 5s;
+  }
+  
+  .shooting-star:nth-child(3) {
+    top: 75%;
+    animation-duration: 7s;
+  }
+  
+  .stars,
+  .stars2,
+  .stars3 {
+    opacity: 0.6;
+  }
+  
+  .stars {
+    background-size: 150px 150px;
+    animation-duration: 120s;
+  }
+  
+  .stars2 {
+    background-size: 60px 60px;
+    animation-duration: 80s;
+  }
+  
+  .stars3 {
+    background-size: 100px 100px;
+    animation-duration: 100s;
+  }
+  
+  .globe-glow {
+    width: 250px;
+    height: 250px;
+    filter: blur(15px);
+  }
+  
+  .space-section-bg::before {
+    background-size: 120px 120px;
+    opacity: 0.2;
+  }
+  
+  @keyframes floatPlanet {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  
+  @keyframes rotateSlow {
+    from {
+      transform: rotate(0deg) scale(0.8);
+    }
+    to {
+      transform: rotate(360deg) scale(0.9);
+    }
+  }
+  
+  @keyframes shootingStars {
+    0% {
+      transform: translateX(0) translateY(0) rotate(25deg);
+      opacity: 0;
+    }
+    15% {
+      transform: translateX(80px) translateY(40px) rotate(25deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(calc(100vw + 200px)) translateY(200px) rotate(25deg);
+      opacity: 0;
+    }
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 320px) {
+  .floating-planet {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .planet-1 {
+    width: 25px;
+    height: 25px;
+    top: 30%;
+    right: 2%;
+  }
+  
+  .planet-2 {
+    width: 20px;
+    height: 20px;
+    bottom: 35%;
+    left: 2%;
+  }
+  
+  .planet-3 {
+    width: 12px;
+    height: 12px;
+    top: 75%;
+    right: 5%;
+  }
+  
+  .nebula {
+    width: 100px;
+    height: 100px;
+    filter: blur(20px);
+    opacity: 0.08;
+  }
+  
+  .nebula-1 {
+    top: 25%;
+    left: 8%;
+  }
+  
+  .nebula-2 {
+    bottom: 25%;
+    right: 5%;
+  }
+  
+  .nebula-3 {
+    width: 80px;
+    height: 80px;
+    top: 75%;
+    left: 5%;
+  }
+  
+  .nebula-4 {
+    width: 120px;
+    height: 120px;
+    top: 55%;
+    right: 25%;
+  }
+  
+  .shooting-star {
+    width: 60px;
+    height: 1px;
+  }
+  
+  .shooting-star:before {
+    width: 4px;
+    height: 4px;
+    box-shadow: 0 0 6px 1px white;
+  }
+  
+  .stars,
+  .stars2,
+  .stars3 {
+    opacity: 0.5;
+  }
+  
+  .stars {
+    background-size: 100px 100px;
+    animation-duration: 100s;
+  }
+  
+  .stars2 {
+    background-size: 40px 40px;
+    animation-duration: 60s;
+  }
+  
+  .stars3 {
+    background-size: 70px 70px;
+    animation-duration: 80s;
+  }
+  
+  .globe-glow {
+    width: 200px;
+    height: 200px;
+    filter: blur(12px);
+  }
+  
+  .space-section-bg::before {
+    background-size: 80px 80px;
+    opacity: 0.15;
+  }
+  
+  @keyframes floatPlanet {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  @keyframes animateStars {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-800px);
+    }
+  }
+  
+  @keyframes animateStars2 {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-800px) translateX(-150px) rotate(20deg);
+    }
+  }
+}

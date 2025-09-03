@@ -581,7 +581,27 @@
   }
 }
 
-@media (max-width: 480px) {
+/* Enhanced responsive design */
+@media (max-width: 1024px) {
+  .content-section {
+    width: 95%;
+    padding: 40px 30px;
+  }
+  
+  .layer-header h2 {
+    font-size: 2.2rem;
+  }
+  
+  .domains-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
   .content-section {
     width: 95%;
     padding: 30px 20px;
@@ -589,15 +609,117 @@
   }
 
   .layer-header h2 {
+    font-size: 2rem;
+  }
+  
+  .layer-header p {
+    font-size: 1rem;
+  }
+  
+  .domains-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .domain-card, .feature-card {
+    text-align: center;
+  }
+  
+  .cta-button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+  
+  /* Navigation responsive */
+  .navbar {
+    padding: 0 15px;
+  }
+  
+  .nav-links {
+    gap: 15px;
+  }
+  
+  .nav-links a {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-section {
+    width: 95%;
+    padding: 20px 15px;
+    margin-bottom: 30px;
+  }
+
+  .layer-header h2 {
     font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .layer-header p {
+    font-size: 0.9rem;
   }
 
   .stat-number {
     font-size: 2.5rem;
   }
+  
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .stat-card {
+    padding: 20px 15px;
+  }
 
   .plan-card.featured {
     transform: scale(1.02);
+  }
+  
+  .cta-button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  /* Navigation mobile */
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .nav-links a {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  
+  /* Make buttons stack vertically on very small screens */
+  .layer-cta {
+    text-align: center;
+  }
+  
+  .layer-cta .cta-button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
   }
 }
 

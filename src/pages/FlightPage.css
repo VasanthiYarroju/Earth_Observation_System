@@ -12,3 +12,223 @@
   border: none !important;
   /* Add other styles if needed, e.g., for background, but usually not for an image */
 }
+
+/* =================================
+   RESPONSIVE DESIGN FOR FLIGHT PAGE
+   ================================= */
+
+/* Flight page container */
+.flight-page {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Flight controls responsive */
+.flight-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  margin-bottom: 20px;
+}
+
+.flight-search, .flight-filter {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Flight map container */
+.flight-map-container {
+  width: 100%;
+  height: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+/* Flight info panel */
+.flight-info-panel {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.flight-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.flight-stat {
+  text-align: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+/* Flight list */
+.flight-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.flight-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.flight-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Tablets and small laptops */
+@media (max-width: 1024px) {
+  .flight-controls {
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .flight-search, .flight-filter {
+    min-width: 180px;
+  }
+  
+  .flight-map-container {
+    height: 400px;
+  }
+  
+  .flight-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .flight-controls {
+    flex-direction: column;
+    padding: 15px;
+  }
+  
+  .flight-search, .flight-filter {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .flight-map-container {
+    height: 350px;
+    margin: 0 10px 20px;
+  }
+  
+  .flight-info-panel {
+    margin: 0 10px 20px;
+    padding: 15px;
+  }
+  
+  .flight-stats {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .flight-stat {
+    padding: 12px;
+  }
+  
+  .flight-list {
+    margin: 0 10px;
+    max-height: 300px;
+  }
+  
+  .flight-card {
+    padding: 12px;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .flight-controls {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .flight-map-container {
+    height: 280px;
+    margin: 0 5px 15px;
+  }
+  
+  .flight-info-panel {
+    margin: 0 5px 15px;
+    padding: 12px;
+  }
+  
+  .flight-stats {
+    gap: 8px;
+  }
+  
+  .flight-stat {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+  
+  .flight-list {
+    margin: 0 5px;
+    max-height: 250px;
+    gap: 10px;
+  }
+  
+  .flight-card {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* Input fields in flight controls */
+  .flight-controls input,
+  .flight-controls select,
+  .flight-controls button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 320px) {
+  .flight-map-container {
+    height: 240px;
+  }
+  
+  .flight-controls {
+    padding: 8px;
+  }
+  
+  .flight-info-panel {
+    padding: 10px;
+  }
+  
+  .flight-stat {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .flight-card {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .flight-controls input,
+  .flight-controls select,
+  .flight-controls button {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}

@@ -476,6 +476,736 @@
   }
 }
 
+/* =================================
+   ENHANCED RESPONSIVE DESIGN
+   ================================= */
+
+/* Large tablets and small laptops */
+@media (max-width: 1024px) {
+  .earth-visualization-page {
+    padding: 15px;
+  }
+  
+  .earth-visualization-header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .domain-selector {
+    margin-bottom: 15px;
+  }
+  
+  .domain-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .earth-map-container {
+    height: 600px;
+  }
+  
+  .info-panel {
+    width: 280px;
+    right: 20px;
+    top: 70px;
+  }
+  
+  .data-panel {
+    width: 280px;
+    top: 100px;
+  }
+  
+  .map-toolbar {
+    gap: 8px;
+  }
+  
+  .toolbar-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .nasa-toolbar .toolbar-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .earth-visualization-page {
+    padding: 12px;
+  }
+  
+  .earth-visualization-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .earth-visualization-header h1 {
+    font-size: 1.4rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .action-button {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+  
+  .domain-selector {
+    overflow-x: auto;
+    padding-bottom: 10px;
+    white-space: nowrap;
+    display: block;
+  }
+  
+  .domain-button {
+    display: inline-flex;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    min-width: 120px;
+  }
+  
+  .earth-map-container {
+    height: 500px;
+  }
+  
+  .map-controls {
+    width: calc(100% - 20px);
+    max-width: none;
+    font-size: 0.8rem;
+  }
+  
+  .info-panel {
+    width: calc(100% - 20px);
+    bottom: 10px;
+    top: auto;
+    left: 10px;
+    right: 10px;
+    max-height: 40%;
+    overflow-y: auto;
+  }
+  
+  .info-panel h3 {
+    font-size: 1rem;
+  }
+  
+  .info-panel p {
+    font-size: 0.85rem;
+  }
+  
+  .dataset-info-panel {
+    width: calc(100% - 20px);
+    bottom: 10px;
+    top: auto;
+    left: 10px;
+    right: 10px;
+    max-height: 40%;
+    overflow-y: auto;
+  }
+  
+  .dataset-info-panel h3 {
+    font-size: 1rem;
+  }
+  
+  .dataset-info-panel p {
+    font-size: 0.85rem;
+  }
+  
+  .data-panel {
+    width: calc(100% - 20px);
+    left: 10px;
+    max-height: 60%;
+    top: 80px;
+  }
+  
+  .map-legend {
+    bottom: 10px;
+    left: 10px;
+    right: auto;
+    min-width: 120px;
+    font-size: 0.8rem;
+  }
+  
+  .map-toolbar {
+    flex-wrap: wrap;
+    gap: 6px;
+    bottom: 15px;
+  }
+  
+  .toolbar-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .nasa-toolbar {
+    width: 100%;
+    justify-content: center;
+    left: 0;
+    transform: none;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .nasa-toolbar .toolbar-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .data-stats {
+    gap: 10px;
+  }
+  
+  .stat {
+    min-width: 80px;
+  }
+  
+  .stat-value {
+    font-size: 1rem;
+  }
+  
+  .basic-earth-view {
+    height: 500px;
+  }
+  
+  .static-earth-container {
+    height: 500px;
+  }
+  
+  .fallback-map-container {
+    height: 500px;
+    padding: 15px;
+  }
+  
+  .fallback-map-image {
+    height: 300px;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .earth-visualization-page {
+    padding: 10px;
+  }
+  
+  .earth-visualization-header h1 {
+    font-size: 1.2rem;
+  }
+  
+  .back-button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .action-button {
+    font-size: 0.75rem;
+    padding: 5px 8px;
+  }
+  
+  .domain-selector {
+    margin-bottom: 10px;
+  }
+  
+  .domain-button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    min-width: 100px;
+  }
+  
+  .domain-icon {
+    font-size: 14px;
+  }
+  
+  .earth-map-container {
+    height: 400px;
+    border-radius: 8px;
+  }
+  
+  .map-controls {
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    gap: 6px;
+  }
+  
+  .coordinates {
+    font-size: 0.7rem;
+  }
+  
+  .style-toggle,
+  .data-toggle {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+  
+  .info-panel {
+    max-height: 50%;
+    padding: 15px;
+  }
+  
+  .info-panel h3 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .info-panel p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  .close-info-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .dataset-info-panel {
+    max-height: 50%;
+    padding: 15px;
+  }
+  
+  .dataset-coordinates {
+    font-size: 0.7rem;
+  }
+  
+  .data-panel {
+    top: 60px;
+    max-height: 70%;
+  }
+  
+  .data-panel-header h3 {
+    font-size: 1rem;
+  }
+  
+  .filter-group label {
+    font-size: 0.8rem;
+  }
+  
+  .filter-group select {
+    padding: 4px;
+    font-size: 0.8rem;
+  }
+  
+  .data-layers h4 {
+    font-size: 0.9rem;
+  }
+  
+  .layer-type {
+    font-size: 0.7rem;
+  }
+  
+  .layer-opacity {
+    font-size: 0.75rem;
+  }
+  
+  .dataset-download-link {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .map-legend {
+    min-width: 100px;
+    font-size: 0.75rem;
+    padding: 8px;
+  }
+  
+  .legend-gradient h5 {
+    font-size: 0.75rem;
+  }
+  
+  .gradient-labels {
+    font-size: 0.65rem;
+  }
+  
+  .map-toolbar {
+    bottom: 10px;
+    gap: 4px;
+  }
+  
+  .toolbar-button {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .nasa-toolbar {
+    gap: 4px;
+    bottom: 10px;
+  }
+  
+  .nasa-toolbar .toolbar-button {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+    border-radius: 15px;
+  }
+  
+  .button-icon {
+    font-size: 12px;
+  }
+  
+  .data-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .stat {
+    min-width: auto;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .stat-value {
+    font-size: 0.9rem;
+  }
+  
+  .basic-earth-view {
+    height: 400px;
+    border-radius: 8px;
+  }
+  
+  .basic-earth-header {
+    padding: 10px 15px;
+  }
+  
+  .basic-earth-header h3 {
+    font-size: 1rem;
+  }
+  
+  .basic-tabs {
+    gap: 5px;
+  }
+  
+  .basic-tabs button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .region {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+  }
+  
+  .data-display {
+    padding: 15px;
+  }
+  
+  .data-display h4 {
+    font-size: 0.9rem;
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .status {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+  
+  .chart-bar {
+    height: 25px;
+    padding: 0 8px;
+  }
+  
+  .bar-label,
+  .bar-value {
+    font-size: 0.8rem;
+  }
+  
+  .info-display {
+    padding: 15px;
+  }
+  
+  .info-display h4 {
+    font-size: 0.9rem;
+  }
+  
+  .info-display h5 {
+    font-size: 0.85rem;
+  }
+  
+  .info-display p,
+  .info-display li {
+    font-size: 0.8rem;
+  }
+  
+  .static-earth-container {
+    height: 400px;
+    border-radius: 8px;
+  }
+  
+  .static-earth-header {
+    padding: 10px 15px;
+  }
+  
+  .static-earth-header h3 {
+    font-size: 1rem;
+  }
+  
+  .static-earth-header p {
+    font-size: 0.8rem;
+  }
+  
+  .static-earth-controls {
+    padding: 8px 15px;
+  }
+  
+  .retry-button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .domain-selector select {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .static-earth-info {
+    padding: 10px 15px;
+  }
+  
+  .static-earth-footer {
+    padding: 8px 15px;
+    font-size: 0.75rem;
+  }
+  
+  .fallback-map-container {
+    height: 400px;
+    padding: 10px;
+  }
+  
+  .fallback-map-image {
+    height: 250px;
+    margin: 15px 0;
+  }
+  
+  .fallback-controls button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .fallback-info {
+    padding: 10px;
+  }
+  
+  .fallback-info h4 {
+    font-size: 0.9rem;
+  }
+  
+  .fallback-info li {
+    font-size: 0.8rem;
+  }
+  
+  .map-loading {
+    padding: 15px;
+  }
+  
+  .spinner {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .map-error {
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+  
+  .map-error button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .map-error-controls {
+    padding: 15px;
+    max-width: 300px;
+  }
+  
+  .error-actions {
+    margin-top: 15px;
+    gap: 10px;
+  }
+  
+  .error-actions button {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 320px) {
+  .earth-visualization-page {
+    padding: 8px;
+  }
+  
+  .earth-visualization-header h1 {
+    font-size: 1.1rem;
+  }
+  
+  .back-button {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .action-button {
+    font-size: 0.7rem;
+    padding: 4px 6px;
+  }
+  
+  .domain-button {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    min-width: 80px;
+  }
+  
+  .earth-map-container {
+    height: 350px;
+  }
+  
+  .map-controls {
+    padding: 5px 6px;
+    font-size: 0.7rem;
+  }
+  
+  .info-panel {
+    padding: 10px;
+  }
+  
+  .info-panel h3 {
+    font-size: 0.85rem;
+  }
+  
+  .info-panel p {
+    font-size: 0.75rem;
+  }
+  
+  .dataset-info-panel {
+    padding: 10px;
+  }
+  
+  .data-panel {
+    top: 50px;
+  }
+  
+  .data-panel-header {
+    padding: 10px;
+  }
+  
+  .data-panel-header h3 {
+    font-size: 0.9rem;
+  }
+  
+  .data-filters {
+    padding: 10px;
+  }
+  
+  .data-layers {
+    padding: 10px;
+  }
+  
+  .map-legend {
+    padding: 6px;
+    font-size: 0.7rem;
+  }
+  
+  .toolbar-button {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+  }
+  
+  .nasa-toolbar .toolbar-button {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+  }
+  
+  .basic-earth-view {
+    height: 350px;
+  }
+  
+  .basic-earth-header {
+    padding: 8px 10px;
+  }
+  
+  .basic-earth-header h3 {
+    font-size: 0.9rem;
+  }
+  
+  .basic-tabs button {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+  
+  .region {
+    width: 25px;
+    height: 25px;
+    font-size: 0.7rem;
+  }
+  
+  .data-display {
+    padding: 10px;
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: 4px;
+    font-size: 0.75rem;
+  }
+  
+  .chart-bar {
+    height: 20px;
+    padding: 0 6px;
+  }
+  
+  .bar-label,
+  .bar-value {
+    font-size: 0.75rem;
+  }
+  
+  .info-display {
+    padding: 10px;
+  }
+  
+  .static-earth-container {
+    height: 350px;
+  }
+  
+  .static-earth-header {
+    padding: 8px 10px;
+  }
+  
+  .static-earth-header h3 {
+    font-size: 0.9rem;
+  }
+  
+  .static-earth-info {
+    padding: 8px 10px;
+  }
+  
+  .fallback-map-container {
+    height: 350px;
+    padding: 8px;
+  }
+  
+  .fallback-map-image {
+    height: 200px;
+  }
+  
+  .spinner {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .map-error-controls {
+    padding: 10px;
+    max-width: 250px;
+  }
+}
+
 /* NASA-like interface enhancements */
 .earth-map-container.enhanced-mode {
   height: 800px; /* Taller for enhanced mode */

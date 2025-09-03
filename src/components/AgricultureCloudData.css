@@ -239,3 +239,290 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* =================================
+   ENHANCED RESPONSIVE DESIGN
+   ================================= */
+
+/* Large tablets and small laptops */
+@media (max-width: 1024px) {
+  .agriculture-cloud-data {
+    padding: 15px;
+    margin-top: 15px;
+  }
+  
+  .ag-cloud-summary-stats {
+    gap: 12px;
+  }
+  
+  .ag-cloud-stat {
+    flex: 1 1 150px;
+    padding: 8px 12px;
+  }
+  
+  .ag-cloud-tabs {
+    gap: 10px;
+  }
+  
+  .ag-cloud-tab {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .ag-cloud-category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .agriculture-cloud-data {
+    padding: 12px;
+    margin-top: 12px;
+  }
+  
+  .ag-cloud-summary {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .ag-cloud-summary h3 {
+    font-size: 1.1rem;
+  }
+  
+  .ag-cloud-summary-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .ag-cloud-stat {
+    padding: 8px 12px;
+  }
+  
+  .ag-cloud-stat-value {
+    font-size: 1.2rem;
+  }
+  
+  .ag-cloud-tabs {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .ag-cloud-tab {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 10px 12px;
+  }
+  
+  .ag-cloud-file-card {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .ag-cloud-file-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .ag-cloud-file-header h4 {
+    font-size: 1rem;
+  }
+  
+  .ag-cloud-file-preview {
+    max-height: 150px;
+    padding: 8px;
+  }
+  
+  .ag-cloud-file-preview pre {
+    font-size: 0.8rem;
+  }
+  
+  .ag-cloud-category-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .ag-cloud-category-card {
+    padding: 12px;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .agriculture-cloud-data {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+  }
+  
+  .ag-cloud-summary {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .ag-cloud-summary h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .ag-cloud-stat {
+    padding: 6px 10px;
+  }
+  
+  .ag-cloud-stat-label {
+    font-size: 0.8rem;
+  }
+  
+  .ag-cloud-stat-value {
+    font-size: 1.1rem;
+  }
+  
+  .ag-cloud-tabs {
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .ag-cloud-tab {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+  
+  .ag-cloud-file-card {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .ag-cloud-file-header h4 {
+    font-size: 0.95rem;
+  }
+  
+  .ag-cloud-file-type {
+    font-size: 0.75rem;
+    padding: 3px 6px;
+  }
+  
+  .ag-cloud-file-meta {
+    font-size: 0.8rem;
+  }
+  
+  .ag-cloud-file-meta p {
+    margin: 3px 0;
+  }
+  
+  .ag-cloud-file-preview {
+    max-height: 120px;
+    padding: 6px;
+  }
+  
+  .ag-cloud-file-preview pre {
+    font-size: 0.75rem;
+  }
+  
+  .ag-cloud-file-link {
+    display: block;
+    text-align: center;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .ag-cloud-category-card {
+    padding: 10px;
+  }
+  
+  .ag-cloud-category-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+  
+  .ag-cloud-category-stats p {
+    font-size: 0.8rem;
+    margin: 3px 0;
+  }
+  
+  .ag-cloud-loading,
+  .ag-cloud-error {
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 320px) {
+  .agriculture-cloud-data {
+    padding: 8px;
+  }
+  
+  .ag-cloud-summary {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .ag-cloud-summary h3 {
+    font-size: 0.9rem;
+  }
+  
+  .ag-cloud-stat {
+    padding: 5px 8px;
+  }
+  
+  .ag-cloud-stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .ag-cloud-stat-value {
+    font-size: 1rem;
+  }
+  
+  .ag-cloud-tab {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .ag-cloud-file-card {
+    padding: 8px;
+  }
+  
+  .ag-cloud-file-header h4 {
+    font-size: 0.85rem;
+  }
+  
+  .ag-cloud-file-type {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+  
+  .ag-cloud-file-meta {
+    font-size: 0.75rem;
+  }
+  
+  .ag-cloud-file-preview {
+    max-height: 100px;
+    padding: 5px;
+  }
+  
+  .ag-cloud-file-preview pre {
+    font-size: 0.7rem;
+  }
+  
+  .ag-cloud-file-link {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .ag-cloud-category-card {
+    padding: 8px;
+  }
+  
+  .ag-cloud-category-card h4 {
+    font-size: 0.85rem;
+  }
+  
+  .ag-cloud-category-stats p {
+    font-size: 0.75rem;
+  }
+}
