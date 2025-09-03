@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
 import { X, Search, ExternalLink, RefreshCw } from 'lucide-react'; 
+import flightService from '../services/flightService';
 
 // Import the custom plane image
 import planeImage from '../assets/flight_icon.png'; // <--- IMPORTANT: Ensure this path is correct based on your project structure
@@ -46,9 +47,10 @@ const FlightPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('http://localhost:8080/api/flights');
-      if (response.data && response.data.flights) {
-        const validFlights = response.data.flights
+      const flightData = await flightService.getAllStates();
+      
+      if (flightData && flightData.length > 0) {
+        const validFlights = flightData
           .filter(f => f.latitude !== null && f.longitude !== null && f.velocity !== null && f.heading !== null)
           .map((flight, index) => ({
             id: flight.id || `flight-${index}-${Date.now()}-${Math.random()}`,
@@ -67,28 +69,8 @@ const FlightPage = () => {
       }
     } catch (err) {
       console.error('Error fetching flight data:', err);
-      
-      // Check if we got a response with fallback data despite the error
-      if (err.response && err.response.data && err.response.data.flights) {
-        console.log('Received fallback data despite error');
-        const validFlights = err.response.data.flights
-          .filter(f => f.latitude !== null && f.longitude !== null && f.velocity !== null && f.heading !== null)
-          .map((flight, index) => ({
-            id: flight.id || `flight-${index}-${Date.now()}-${Math.random()}`,
-            callsign: flight.callsign || 'N/A',
-            latitude: flight.latitude,
-            longitude: flight.longitude,
-            altitude: flight.altitude || 0,
-            velocity: flight.velocity || 0,
-            heading: flight.heading || 0,
-            country: flight.country || 'Unknown'
-          }));
-        setFlights(validFlights);
-        setError("Note: Using fallback/mock flight data. The OpenSky API is temporarily unavailable.");
-      } else {
-        setError("Failed to load flight data. Please ensure your backend server is running and accessible (e.g., `npm start` or `node server.js` for the backend).");
-        setFlights([]);
-      }
+      setError("Failed to load flight data. Please ensure your backend server is running and accessible.");
+      setFlights([]);
     } finally {
       setLoading(false);
     }

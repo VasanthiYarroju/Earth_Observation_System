@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+// Use environment variable for API base URL
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
 class FlightService {
   constructor() {
-    this.serverURL = 'http://localhost:5000/api';
+    this.serverURL = `${API_BASE_URL}/api`;
     this.timeout = 15000;
   }
 

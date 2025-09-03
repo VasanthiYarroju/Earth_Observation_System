@@ -3,7 +3,7 @@
 
 class RealDataAgricultureService {
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+    this.baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
     this.cache = new Map();
     this.cacheDuration = 10 * 60 * 1000; // 10 minutes
   }

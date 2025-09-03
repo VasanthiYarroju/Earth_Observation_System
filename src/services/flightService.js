@@ -1,9 +1,9 @@
 import axios from 'axios';
-
+import { API_BASE_URL } from './api';
 
 class FlightService {
   constructor() {
-    this.serverURL = 'http://localhost:8080/api';
+    this.serverURL = `${API_BASE_URL}/api`;
     this.timeout = 15000;
   }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { MapContainer, TileLayer, Polygon, Popup, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { enhancedAgricultureService } from '../services/enhancedAgricultureService';
+import { API_BASE_URL } from '../services/api';
 import L from 'leaflet';
 
 // Fix for default markers
@@ -342,7 +343,7 @@ const SectorBasedAgricultureMap = ({ onError }) => {
       console.log(`🔍 Fetching data for country: ${countryName} in sector: ${activeSector}`);
       
       // Fetch comprehensive country data from server
-      const response = await fetch(`http://localhost:8080/api/agriculture/region-details?country=${encodeURIComponent(countryName)}&sector=${activeSector}`);
+      const response = await fetch(`${API_BASE_URL}/api/agriculture/region-details?country=${encodeURIComponent(countryName)}&sector=${activeSector}`);
       
       if (response.ok) {
         const countryData = await response.json();
@@ -470,7 +471,7 @@ const SectorBasedAgricultureMap = ({ onError }) => {
     try {
       console.log(`🔍 Fetching detailed data for ${country} in ${sector} sector`);
       
-      const apiUrl = `http://localhost:8080/api/agriculture/region-details?country=${encodeURIComponent(country)}&sector=${encodeURIComponent(sector)}`;
+      const apiUrl = `${API_BASE_URL}/api/agriculture/region-details?country=${encodeURIComponent(country)}&sector=${encodeURIComponent(sector)}`;
       console.log('🌐 API URL:', apiUrl);
       
       // Call the server endpoint to get country-specific data from real CSV files (use absolute URL)

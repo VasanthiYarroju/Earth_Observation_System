@@ -1,7 +1,7 @@
 // Enhanced Agriculture Service with Real World Boundaries
 class EnhancedAgricultureService {
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+    this.baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
   }
 
   /**
