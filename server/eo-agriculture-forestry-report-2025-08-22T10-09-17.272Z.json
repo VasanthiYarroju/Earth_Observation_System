@@ -1,0 +1,159 @@
+{
+  "bucketName": "eo-agriculture-forestry",
+  "timestamp": "2025-08-22T10:09:17.272Z",
+  "totalFiles": 78,
+  "categories": [
+    {
+      "name": "agriculture",
+      "fileCount": 78,
+      "totalSize": 7359585330,
+      "formattedSize": "6.85 GB",
+      "fileTypes": {
+        ".csv": 78
+      },
+      "lastUpdated": "2025-08-18T05:49:13.799Z"
+    }
+  ],
+  "sampleFiles": [
+    {
+      "name": "agriculture/fao_data_production_indices_data.csv",
+      "size": 27528971,
+      "formattedSize": "26.25 MB",
+      "updated": "2025-08-18T05:49:13.799Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/fao_data_production_indices_data.csv"
+    },
+    {
+      "name": "agriculture/fao_data_land_data.csv",
+      "size": 6901353,
+      "formattedSize": "6.58 MB",
+      "updated": "2025-08-18T05:48:58.271Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/fao_data_land_data.csv"
+    },
+    {
+      "name": "agriculture/fao_data_forest_data.csv",
+      "size": 101500632,
+      "formattedSize": "96.8 MB",
+      "updated": "2025-08-18T05:48:54.313Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/fao_data_forest_data.csv"
+    },
+    {
+      "name": "agriculture/fao_data_fertilizers_data.csv",
+      "size": 5675339,
+      "formattedSize": "5.41 MB",
+      "updated": "2025-08-18T05:48:02.586Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/fao_data_fertilizers_data.csv"
+    },
+    {
+      "name": "agriculture/fao_data_crops_data.csv",
+      "size": 154339268,
+      "formattedSize": "147.19 MB",
+      "updated": "2025-08-18T05:47:57.722Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/fao_data_crops_data.csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Trade_Indices_E_All_Data_(Norm).csv",
+      "size": 21266353,
+      "formattedSize": "20.28 MB",
+      "updated": "2025-08-15T10:31:48.171Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Trade_Indices_E_All_Data_(Norm).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Trade_Crops_Livestock_E_All_Data_(Normalized).csv",
+      "size": 1568751184,
+      "formattedSize": "1.46 GB",
+      "updated": "2025-08-15T10:30:59.584Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Trade_Crops_Livestock_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Resources_FertilizersArchive_E_All_Data.csv",
+      "size": 128951186,
+      "formattedSize": "122.98 MB",
+      "updated": "2025-08-15T09:53:52.802Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Resources_FertilizersArchive_E_All_Data.csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Production_Livestock_E_All_Data_(Normalized).csv",
+      "size": 15757669,
+      "formattedSize": "15.03 MB",
+      "updated": "2025-08-15T09:49:00.410Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Production_Livestock_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Production_LivestockProcessed_E_All_Data_(Normalized).csv",
+      "size": 11013001,
+      "formattedSize": "10.5 MB",
+      "updated": "2025-08-15T09:48:23.925Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Production_LivestockProcessed_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Production_LivestockPrimary_E_All_Data_(Normalized).csv",
+      "size": 125187577,
+      "formattedSize": "119.39 MB",
+      "updated": "2025-08-15T09:48:02.745Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Production_LivestockPrimary_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Production_Indices_E_All_Data_(Normalized).csv",
+      "size": 81032796,
+      "formattedSize": "77.28 MB",
+      "updated": "2025-08-15T09:43:49.900Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Production_Indices_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Production_Crops_E_All_Data_(Normalized).csv",
+      "size": 270135828,
+      "formattedSize": "257.62 MB",
+      "updated": "2025-08-15T09:38:45.554Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Production_Crops_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Production_CropsProcessed_E_All_Data_(Normalized).csv",
+      "size": 12193695,
+      "formattedSize": "11.63 MB",
+      "updated": "2025-08-15T09:20:21.182Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Production_CropsProcessed_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Price_Indices_E_All_Data_(Normalized).csv",
+      "size": 26375250,
+      "formattedSize": "25.15 MB",
+      "updated": "2025-08-15T09:19:22.857Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Price_Indices_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Prices_Monthly_E_All_Data_(Normalized).csv",
+      "size": 19284904,
+      "formattedSize": "18.39 MB",
+      "updated": "2025-08-15T09:18:22.766Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Prices_Monthly_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Prices_E_All_Data_(Normalized).csv",
+      "size": 45069442,
+      "formattedSize": "42.98 MB",
+      "updated": "2025-08-15T09:17:57.521Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Prices_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/PricesArchive_E_All_Data.csv",
+      "size": 15417956,
+      "formattedSize": "14.7 MB",
+      "updated": "2025-08-15T09:15:28.317Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/PricesArchive_E_All_Data.csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Population_E_All_Data_(Normalized).csv",
+      "size": 21716332,
+      "formattedSize": "20.71 MB",
+      "updated": "2025-08-15T09:14:40.069Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Population_E_All_Data_(Normalized).csv"
+    },
+    {
+      "name": "agriculture/current_FAO/raw_files/Population_E_All_Data_(Norm).csv",
+      "size": 24755015,
+      "formattedSize": "23.61 MB",
+      "updated": "2025-08-15T09:13:32.192Z",
+      "url": "https://storage.googleapis.com/eo-agriculture-forestry/agriculture/current_FAO/raw_files/Population_E_All_Data_(Norm).csv"
+    }
+  ]
+}
