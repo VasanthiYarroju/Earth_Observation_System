@@ -1,6 +1,7 @@
 import { Storage } from "@google-cloud/storage";
 import path from "path";
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 // Configuration
 const __filename = fileURLToPath(import.meta.url);
@@ -17,14 +18,47 @@ const DOMAIN_BUCKET_MAP = {
   health: "eo-public-health"          // Maps to water_potability
 };
 
-// Initialize Google Cloud Storage
-const storage = new Storage({ keyFilename: KEY_FILE });
+// Initialize Google Cloud Storage with flexible authentication
+let storage;
+
+try {
+  // First, try to use service account key file (for local development)
+  if (fs.existsSync(KEY_FILE)) {
+    storage = new Storage({ keyFilename: KEY_FILE });
+    console.log('✅ Google Cloud Storage initialized with service account key file');
+  } else {
+    throw new Error('Service account key file not found');
+  }
+} catch (error) {
+  // If file doesn't exist, try environment variables (for production deployment)
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    try {
+      const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      storage = new Storage({ 
+        projectId: credentials.project_id,
+        credentials: credentials
+      });
+      console.log('✅ Google Cloud Storage initialized with environment credentials');
+    } catch (envError) {
+      console.error('❌ Failed to parse Google Cloud credentials from environment:', envError);
+      storage = null;
+    }
+  } else {
+    console.log('⚠️ No Google Cloud credentials found. Set GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable for production.');
+    storage = null;
+  }
+}
 
 /**
  * Get list of files in a bucket for a specific domain
  */
 export const getFileListByDomain = async (domain) => {
   try {
+    // Check if Google Cloud Storage is available
+    if (!storage) {
+      throw new Error('Google Cloud Storage not initialized. Please configure credentials.');
+    }
+
     const bucketName = DOMAIN_BUCKET_MAP[domain.toLowerCase()];
     
     if (!bucketName) {
@@ -94,6 +128,11 @@ export const getDomainDatasetMetadata = async (domain) => {
  */
 export const getSampleData = async (domain, category = null, limit = 10) => {
   try {
+    // Check if Google Cloud Storage is available
+    if (!storage) {
+      throw new Error('Google Cloud Storage not initialized. Please configure credentials.');
+    }
+
     const files = await getFileListByDomain(domain);
     
     // Filter by category if provided
