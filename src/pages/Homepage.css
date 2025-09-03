@@ -1,0 +1,603 @@
+/* Homepage.css - Professional Earth Observation System Layout */
+
+/* General Section Styling - Professional layout with proper centering */
+.content-section {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto 80px auto; /* Properly center sections */
+  padding: 60px 40px;
+  background: rgba(20, 20, 20, 0.6); /* Subtle dark background for separation */
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Professional shadow */
+  color: #e0e0e0;
+  line-height: 1.6;
+  backdrop-filter: blur(10px); /* Professional glass effect */
+}
+
+/* Wrapper for all content sections */
+.layers-wrapper {
+  background: linear-gradient(180deg, #000000 0%, #1a1a1a 50%, #2a2a2a 100%);
+  padding: 80px 0;
+  min-height: 100vh;
+}
+
+.layer-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.layer-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #4fc3f7;
+  line-height: 1.2;
+}
+
+.layer-header p {
+  font-size: 1.2rem;
+  color: #b0b0b0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.layer-cta {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  background: rgba(79, 195, 247, 0.1); /* Subtle accent background */
+  border-radius: 16px;
+  border-left: 4px solid #4fc3f7;
+  box-shadow: 0 4px 16px rgba(79, 195, 247, 0.1);
+}
+
+.layer-cta p {
+  font-size: 1.1rem;
+  color: #c0c0c0;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Subscribe button style */
+.subscribe-button {
+  padding: 12px 25px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.subscribe-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(79, 195, 247, 0.3);
+}
+
+/* Layer 1 - Insights Grid */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.insight-card {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.insight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.2);
+  border-color: rgba(79, 195, 247, 0.3);
+}
+
+.insight-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: block;
+  color: #4fc3f7;
+}
+
+.insight-card h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #f0f0f0;
+}
+
+.insight-card p {
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+
+/* Layer 2 - Domains Grid */
+.domains-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin: 40px 0;
+}
+
+.domain-card {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+}
+
+.domain-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.2);
+  border-color: rgba(79, 195, 247, 0.3);
+}
+
+.domain-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  display: block;
+  color: #4fc3f7;
+}
+
+.domain-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #f0f0f0;
+}
+
+.domain-card p {
+  color: #b0b0b0;
+  font-size: 0.95rem;
+}
+
+/* Layer 3 - Steps Container */
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 25px;
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.1);
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #f0f0f0;
+}
+
+.step-content p {
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+
+/* Layer 4 - Plans Grid */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.plan-card {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+.plan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.1);
+}
+
+.plan-card.featured {
+  border: 2px solid #4fc3f7;
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(79, 195, 247, 0.3);
+}
+
+.plan-card.featured::before {
+  content: "POPULAR";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: white;
+  padding: 5px 20px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.plan-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #f0f0f0;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.plan-card li {
+  padding: 8px 0;
+  color: #b0b0b0;
+  position: relative;
+  padding-left: 25px;
+}
+
+.plan-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4fc3f7;
+  font-weight: 600;
+}
+
+.benefits-section {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.benefits-section h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #4fc3f7;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.benefit {
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Layer 5 - Updates List */
+.updates-list {
+  margin: 40px 0;
+}
+
+.update-item {
+  display: flex;
+  gap: 25px;
+  padding: 25px;
+  margin-bottom: 20px;
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.update-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.1);
+}
+
+.update-date {
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.update-content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin: 0;
+}
+
+/* Layer 6 - Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.3);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px) scale(1.05);
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.stat-label {
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* Layer 7 - Case Studies Grid */
+.case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin: 40px 0;
+}
+
+.case-study {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+}
+
+.case-study:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.2);
+  border-color: rgba(79, 195, 247, 0.3);
+}
+
+.case-study h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #f0f0f0;
+}
+
+.case-study p {
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+
+/* Layer 8 - Tech Grid */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin: 40px 0;
+}
+
+.tech-card {
+  background: rgba(30, 30, 30, 0.8);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.tech-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(79, 195, 247, 0.2);
+  border-color: rgba(79, 195, 247, 0.3);
+}
+
+.tech-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: block;
+  color: #4fc3f7;
+}
+
+.tech-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #f0f0f0;
+}
+
+.tech-card p {
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+
+/* Layer 9 - Footer */
+.footer-layer {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.footer-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-section h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #4fc3f7;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section li {
+  padding: 5px 0;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.footer-section li:hover {
+  color: #4fc3f7;
+}
+
+.footer-section p {
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.footer-tagline {
+  text-align: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-tagline h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #4fc3f7;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content-section {
+    width: 95%;
+    padding: 40px 30px;
+    margin-bottom: 60px;
+  }
+
+  .layer-header h2 {
+    font-size: 2rem;
+  }
+
+  .layer-header p {
+    font-size: 1.1rem;
+  }
+
+  .insights-grid,
+  .domains-grid,
+  .steps-container,
+  .plans-grid,
+  .stats-grid,
+  .case-studies-grid,
+  .tech-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .step {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .update-item {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .update-date {
+    align-self: center;
+  }
+
+  .footer-sections {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-section {
+    width: 95%;
+    padding: 30px 20px;
+    margin-bottom: 40px;
+  }
+
+  .layer-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+  }
+
+  .plan-card.featured {
+    transform: scale(1.02);
+  }
+}
+

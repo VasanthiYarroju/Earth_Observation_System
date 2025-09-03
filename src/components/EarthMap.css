@@ -1,0 +1,1208 @@
+.earth-map-container {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Earth Visualization Page Styles */
+.earth-visualization-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #020c1b;
+  color: white;
+  padding: 20px;
+}
+
+.earth-visualization-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.earth-visualization-header h1 {
+  font-size: 1.8rem;
+  color: #4fc3f7;
+  margin: 0;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(37, 91, 145, 0.3);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: rgba(37, 91, 145, 0.5);
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(37, 91, 145, 0.3);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  background: rgba(37, 91, 145, 0.5);
+}
+
+.domain-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.domain-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  color: white;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.domain-button:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: var(--domain-color, #4fc3f7);
+}
+
+.domain-button.active {
+  background: rgba(var(--domain-color, #4fc3f7), 0.2);
+  border-color: var(--domain-color, #4fc3f7);
+}
+
+.domain-icon {
+  font-size: 18px;
+}
+
+.earth-map-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.map-toolbar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.toolbar-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.toolbar-button:hover {
+  background: rgba(37, 91, 145, 0.7);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.info-panel {
+  position: absolute;
+  top: 80px;
+  right: 30px;
+  width: 300px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 8px;
+  border: 1px solid rgba(37, 91, 145, 0.5);
+  padding: 20px;
+  z-index: 20;
+  color: white;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.info-panel h3 {
+  margin-top: 0;
+  color: #4fc3f7;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.info-panel p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.close-info-button {
+  background: #4fc3f7;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.earth-visualization-footer {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.data-stats {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4fc3f7;
+}
+
+@media (max-width: 768px) {
+  .earth-visualization-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .domain-selector {
+    overflow-x: auto;
+    padding-bottom: 10px;
+    white-space: nowrap;
+    display: block;
+  }
+  
+  .domain-button {
+    display: inline-flex;
+  }
+  
+  .info-panel {
+    width: auto;
+    left: 20px;
+    right: 20px;
+  }
+}
+
+.map-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.map-controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  padding: 8px 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  backdrop-filter: blur(4px);
+  color: white;
+  font-size: 12px;
+  max-width: 400px;
+}
+
+.coordinates {
+  font-family: monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.map-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.style-toggle {
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #4fc3f7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.style-toggle:hover {
+  background-color: #03a9f4;
+}
+
+/* Loading Indicator */
+.map-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+  color: white;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(79, 195, 247, 0.3);
+  border-top: 4px solid #4fc3f7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error Display */
+.map-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(244, 67, 54, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  z-index: 20;
+  color: white;
+}
+
+.map-error button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: white;
+  color: #f44336;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Dataset Info Panel */
+.dataset-info-panel {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 300px;
+  padding: 15px;
+  border-radius: 8px;
+  color: white;
+  z-index: 15;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dataset-info-panel h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #4fc3f7;
+  font-size: 18px;
+  padding-right: 20px;
+}
+
+.dataset-info-panel p {
+  margin-bottom: 15px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.dataset-coordinates {
+  font-family: monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+
+.close-panel {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.close-panel:hover {
+  color: white;
+}
+
+/* Legend */
+.map-legend {
+  position: absolute;
+  bottom: 30px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 4px;
+  z-index: 10;
+  color: white;
+  font-size: 12px;
+  min-width: 150px;
+  backdrop-filter: blur(4px);
+}
+
+.map-legend h4 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 5px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .earth-map-container {
+    height: 500px;
+  }
+  
+  .map-controls {
+    width: calc(100% - 20px);
+    max-width: none;
+  }
+  
+  .dataset-info-panel {
+    width: calc(100% - 20px);
+    bottom: 10px;
+    top: auto;
+    left: 10px;
+    right: 10px;
+    max-height: 40%;
+    overflow-y: auto;
+  }
+  
+  .map-legend {
+    bottom: 10px;
+    left: 10px;
+    right: auto;
+  }
+  
+  .nasa-toolbar {
+    width: 100%;
+    justify-content: center;
+    left: 0;
+    transform: none;
+    flex-wrap: wrap;
+  }
+  
+  .data-panel {
+    width: calc(100% - 20px);
+    left: 10px;
+    max-height: 60%;
+  }
+}
+
+/* NASA-like interface enhancements */
+.earth-map-container.enhanced-mode {
+  height: 800px; /* Taller for enhanced mode */
+}
+
+.data-toggle {
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #4fc3f7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 8px;
+}
+
+.data-toggle:hover {
+  background-color: #03a9f4;
+}
+
+.data-panel {
+  position: absolute;
+  left: 10px;
+  top: 120px;
+  width: 300px;
+  max-height: 70%;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  color: white;
+  z-index: 15;
+  overflow-y: auto;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.data-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.data-panel-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #4fc3f7;
+}
+
+.data-filters {
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.filter-group {
+  margin-bottom: 10px;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.data-layers {
+  padding: 15px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.data-layers h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.layer-item {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.layer-visibility {
+  display: flex;
+  align-items: center;
+}
+
+.layer-visibility input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.layer-type {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.layer-opacity {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.layer-opacity label {
+  width: 60px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.layer-opacity input[type="range"] {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.dataset-category {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.category-label {
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 5px;
+}
+
+.category-value {
+  background-color: rgba(79, 195, 247, 0.2);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.dataset-stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.dataset-download-link {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 12px;
+  background-color: #4fc3f7;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.dataset-download-link:hover {
+  background-color: #03a9f4;
+}
+
+.legend-gradient {
+  margin-top: 15px;
+}
+
+.legend-gradient h5 {
+  margin: 0 0 5px 0;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.gradient-bar {
+  display: flex;
+  flex-direction: column;
+}
+
+.gradient-colors {
+  height: 8px;
+  background: linear-gradient(to right, #b30000, #e6ac00, #66cc00, #009900, #006600);
+  border-radius: 4px;
+}
+
+.gradient-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2px;
+}
+
+.nasa-toolbar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.nasa-toolbar .toolbar-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.nasa-toolbar .toolbar-button:hover {
+  background-color: rgba(79, 195, 247, 0.7);
+}
+
+.button-icon {
+  font-size: 16px;
+}
+
+/* Map Wrapper */
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.map-error-controls {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.8);
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+  z-index: 1000;
+  text-align: center;
+  max-width: 400px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.error-actions button {
+  background: #4fc3f7;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error-actions button:hover {
+  background: #03a9f4;
+}
+
+.fallback-map-container {
+  width: 100%;
+  height: 700px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: white;
+}
+
+.fallback-map-image {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.fallback-map-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.fallback-controls {
+  margin: 20px 0;
+}
+
+.fallback-controls button {
+  background: #4fc3f7;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fallback-info {
+  text-align: left;
+  background: rgba(0,0,0,0.5);
+  border-radius: 8px;
+  padding: 15px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.fallback-info h4 {
+  color: #4fc3f7;
+  margin-top: 0;
+}
+
+.fallback-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fallback-info li {
+  margin-bottom: 5px;
+}
+
+/* Static Earth Map */
+.static-earth-container {
+  width: 100%;
+  height: 700px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  overflow: hidden;
+}
+
+.static-earth-header {
+  padding: 15px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.static-earth-header h3 {
+  margin: 0 0 5px 0;
+  color: #4fc3f7;
+}
+
+.static-earth-header p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.static-earth-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+}
+
+.static-earth-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.static-earth-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.retry-button {
+  background: #4fc3f7;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.domain-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.domain-selector select {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+
+.static-earth-info {
+  padding: 15px 20px;
+}
+
+.info-panel {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.info-panel h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #4fc3f7;
+}
+
+.info-panel ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.info-panel li {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.static-earth-footer {
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Basic Earth View - Pure HTML/CSS fallback */
+.basic-earth-view {
+  width: 100%;
+  height: 700px;
+  background: #0a0f1c;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.basic-earth-header {
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.basic-earth-header h3 {
+  margin: 0;
+  color: #4fc3f7;
+}
+
+.basic-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.basic-tabs button {
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.basic-tabs button.active {
+  background: rgba(79, 195, 247, 0.2);
+  color: white;
+  border-color: rgba(79, 195, 247, 0.5);
+}
+
+.basic-earth-content {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+  position: relative;
+}
+
+.earth-image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.earth-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.region {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(79, 195, 247, 0.3);
+  border: 2px solid rgba(79, 195, 247, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+.region:hover {
+  transform: scale(1.2);
+  background: rgba(79, 195, 247, 0.5);
+}
+
+.north-america {
+  top: 25%;
+  left: 20%;
+}
+
+.south-america {
+  top: 55%;
+  left: 30%;
+}
+
+.europe {
+  top: 25%;
+  left: 48%;
+}
+
+.africa {
+  top: 45%;
+  left: 50%;
+}
+
+.asia {
+  top: 30%;
+  left: 70%;
+}
+
+.oceania {
+  top: 65%;
+  left: 80%;
+}
+
+.data-display {
+  padding: 20px;
+}
+
+.data-display h4 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #4fc3f7;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.data-table th {
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.data-table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status.good {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.status.warning {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+}
+
+.status.alert {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+}
+
+.chart-container {
+  margin-top: 30px;
+}
+
+.bar-chart-basic {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chart-bar {
+  height: 30px;
+  background: linear-gradient(90deg, rgba(79, 195, 247, 0.3) 0%, rgba(79, 195, 247, 0.7) 100%);
+  border-radius: 4px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  min-width: 40px;
+}
+
+.bar-label {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.bar-value {
+  font-weight: bold;
+}
+
+.info-display {
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.info-display h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #4fc3f7;
+}
+
+.info-display h5 {
+  margin: 20px 0 10px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.info-display p {
+  margin: 0 0 15px;
+}
+
+.info-display ul {
+  margin: 0 0 15px;
+  padding-left: 20px;
+}
+
+.info-display li {
+  margin-bottom: 5px;
+}
+
+.basic-earth-footer {
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.basic-earth-footer p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-actions {
+  margin-top: 10px;
+}
+
+.footer-actions button {
+  background: #4fc3f7;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
