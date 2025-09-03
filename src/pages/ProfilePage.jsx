@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { User, ChevronLeft, Edit, X, Check, Plus } from 'lucide-react';
+import { User, ChevronLeft, Edit, X, Check, Plus, Crown, Calendar, DollarSign, CheckCircle, AlertCircle } from 'lucide-react';
+import { hasActiveSubscription, getSubscriptionDetails, getSubscriptionPlanName } from '../utils/subscriptionUtils';
 import './SpaceAnimations.css';
 
 const ProfilePage = () => {
@@ -182,6 +183,110 @@ const ProfilePage = () => {
                 </div>
               ) : (
                 <p style={styles.noDomains}>No domains selected</p>
+              )}
+            </div>
+
+            {/* Subscription Section */}
+            <div style={styles.subscriptionSection}>
+              <h3 style={styles.sectionTitle}>
+                <Crown size={20} style={{ marginRight: '8px' }} />
+                Subscription Status
+              </h3>
+              {hasActiveSubscription(user) ? (
+                <div style={styles.subscriptionActive}>
+                  <div style={styles.subscriptionHeader}>
+                    <CheckCircle size={20} color="#4caf50" />
+                    <span style={styles.subscriptionStatus}>Active Subscription</span>
+                  </div>
+                  
+                  {(() => {
+                    const subscription = getSubscriptionDetails(user);
+                    return (
+                      <div style={styles.subscriptionDetails}>
+                        <div style={styles.subscriptionRow}>
+                          <span style={styles.subscriptionLabel}>Plan:</span>
+                          <span style={styles.subscriptionValue}>{getSubscriptionPlanName(user)}</span>
+                        </div>
+                        
+                        {subscription?.billingCycle && (
+                          <div style={styles.subscriptionRow}>
+                            <span style={styles.subscriptionLabel}>Billing:</span>
+                            <span style={styles.subscriptionValue}>
+                              {subscription.billingCycle === 'monthly' ? 'Monthly' : 'Yearly'}
+                            </span>
+                          </div>
+                        )}
+                        
+                        {subscription?.price !== undefined && (
+                          <div style={styles.subscriptionRow}>
+                            <span style={styles.subscriptionLabel}>Price:</span>
+                            <span style={styles.subscriptionValue}>
+                              {subscription.price === 0 ? 'Free' : `$${subscription.price}/${subscription.billingCycle || 'month'}`}
+                            </span>
+                          </div>
+                        )}
+                        
+                        {subscription?.startDate && (
+                          <div style={styles.subscriptionRow}>
+                            <span style={styles.subscriptionLabel}>Start Date:</span>
+                            <span style={styles.subscriptionValue}>
+                              {new Date(subscription.startDate).toLocaleDateString()}
+                            </span>
+                          </div>
+                        )}
+                        
+                        {subscription?.features && subscription.features.length > 0 && (
+                          <div style={styles.featuresContainer}>
+                            <span style={styles.subscriptionLabel}>Features:</span>
+                            <div style={styles.featuresList}>
+                              {subscription.features.slice(0, 3).map((feature, index) => (
+                                <div key={index} style={styles.featureBadge}>
+                                  <CheckCircle size={12} />
+                                  {feature}
+                                </div>
+                              ))}
+                              {subscription.features.length > 3 && (
+                                <div style={styles.featureBadge}>
+                                  +{subscription.features.length - 3} more
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+                  
+                  <div style={styles.subscriptionActions}>
+                    <button 
+                      style={styles.manageSubscriptionButton}
+                      onClick={() => navigate('/subscription')}
+                    >
+                      Manage Subscription
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div style={styles.subscriptionInactive}>
+                  <div style={styles.subscriptionHeader}>
+                    <AlertCircle size={20} color="#ff9800" />
+                    <span style={styles.subscriptionStatus}>No Active Subscription</span>
+                  </div>
+                  
+                  <p style={styles.subscriptionMessage}>
+                    Upgrade to access premium features like agriculture data, historical analysis, and more.
+                  </p>
+                  
+                  <div style={styles.subscriptionActions}>
+                    <button 
+                      style={styles.upgradeButton}
+                      onClick={() => navigate('/subscription')}
+                    >
+                      <Crown size={16} style={{ marginRight: '6px' }} />
+                      Upgrade Now
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
             
@@ -560,6 +665,109 @@ const styles = {
     marginBottom: '20px',
     textAlign: 'center',
     fontWeight: '500',
+  },
+  // Subscription section styles
+  subscriptionSection: {
+    marginBottom: '30px',
+    backgroundColor: 'rgba(50, 50, 70, 0.2)',
+    borderRadius: '8px',
+    padding: '20px',
+    border: '1px solid rgba(79, 195, 247, 0.2)',
+  },
+  subscriptionActive: {
+    backgroundColor: 'rgba(76, 175, 80, 0.05)',
+    borderRadius: '6px',
+    padding: '16px',
+    border: '1px solid rgba(76, 175, 80, 0.2)',
+  },
+  subscriptionInactive: {
+    backgroundColor: 'rgba(255, 152, 0, 0.05)',
+    borderRadius: '6px',
+    padding: '16px',
+    border: '1px solid rgba(255, 152, 0, 0.2)',
+  },
+  subscriptionHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '12px',
+  },
+  subscriptionStatus: {
+    fontSize: '16px',
+    fontWeight: '600',
+    color: 'white',
+  },
+  subscriptionDetails: {
+    marginTop: '16px',
+  },
+  subscriptionRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '8px 0',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  subscriptionLabel: {
+    color: '#b0b0b0',
+    fontWeight: '500',
+  },
+  subscriptionValue: {
+    color: 'white',
+    fontWeight: '500',
+  },
+  subscriptionMessage: {
+    color: '#b0b0b0',
+    marginBottom: '16px',
+    lineHeight: '1.5',
+  },
+  subscriptionActions: {
+    marginTop: '16px',
+    display: 'flex',
+    gap: '10px',
+  },
+  manageSubscriptionButton: {
+    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+    color: '#2196f3',
+    border: '1px solid rgba(33, 150, 243, 0.3)',
+    borderRadius: '4px',
+    padding: '8px 16px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '500',
+    transition: 'all 0.2s ease',
+  },
+  upgradeButton: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+    color: '#ffc107',
+    border: '1px solid rgba(255, 193, 7, 0.3)',
+    borderRadius: '4px',
+    padding: '8px 16px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '500',
+    transition: 'all 0.2s ease',
+  },
+  featuresContainer: {
+    marginTop: '12px',
+  },
+  featuresList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+    marginTop: '8px',
+  },
+  featureBadge: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    color: '#4caf50',
+    padding: '4px 8px',
+    borderRadius: '12px',
+    fontSize: '12px',
+    fontWeight: '500',
+    border: '1px solid rgba(76, 175, 80, 0.2)',
   },
 };
 
