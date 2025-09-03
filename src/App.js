@@ -8,6 +8,7 @@ import AgriculturePage from './pages/AgriculturePage';
 import AgricultureLimitedPage from './pages/AgricultureLimitedPage';
 import EarthVisualization from './pages/EarthVisualization';
 import SubscriptionPage from './pages/SubscriptionPage';
+import SubscriptionStatusPage from './pages/SubscriptionStatusPage';
 import SectorBasedAgricultureMap from './components/SectorBasedAgricultureMap';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
@@ -61,6 +62,16 @@ function App() {
         element={
           <PrivateRoute redirectPath="/earth">
             <SubscriptionPage />
+          </PrivateRoute>
+        }
+      />
+      
+      {/* Protected Subscription Status Page */}
+      <Route 
+        path="/subscription-status" 
+        element={
+          <PrivateRoute redirectPath="/earth">
+            <SubscriptionStatusPage />
           </PrivateRoute>
         }
       />

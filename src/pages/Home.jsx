@@ -1271,7 +1271,7 @@ const sidebarItems = React.useMemo(() => {
             <div style={styles.profileMenu}>
               <div style={styles.profileMenuPointer}></div>
               <button onClick={() => navigate('/profile')} style={styles.profileMenuItem}>Profile</button>
-              <a href="#subscription" style={styles.profileMenuItem}>Subscription Status</a>
+              <button onClick={() => navigate('/subscription-status')} style={styles.profileMenuItem}>Subscription Status</button>
               <button onClick={handleLogout} style={styles.profileMenuItem}><LogOut size={16} style={{marginRight: '8px'}} />Logout</button>
             </div>
           )}
