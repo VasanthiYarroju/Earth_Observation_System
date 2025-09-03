@@ -15,7 +15,6 @@ import {
   Check,
   X
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import './SubscriptionPage.css';
 
 const SubscriptionPage = () => {
