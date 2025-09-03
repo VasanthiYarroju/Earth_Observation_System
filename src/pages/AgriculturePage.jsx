@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getDomainMetadata, getDomainAnalytics, getDomainSampleData } from '../services/domainService';
+import { hasActiveSubscription, getSubscriptionDetails } from '../utils/subscriptionUtils';
 import { ChevronLeft, BarChart2, Globe, Database, FileText, Activity, CheckCircle, X } from 'lucide-react';
 import './SpaceAnimations.css';
 import './DomainPage.css';
@@ -113,27 +114,32 @@ const AgriculturePage = () => {
   useEffect(() => {
     console.log('Agriculture: Checking subscription status. User:', user);
     
-    // Check user object for subscription
-    if (user && user.subscription && user.subscription.status === 'active') {
-      console.log('Agriculture: Found active subscription in user object:', user.subscription);
+    // Use subscription utilities for consistent checking
+    const hasActiveSubscriptionStatus = hasActiveSubscription(user);
+    
+    if (hasActiveSubscriptionStatus) {
+      console.log('Agriculture: Found active subscription via utilities');
       setHasSubscription(true);
+      setFileLimit(100); // Remove file limit for subscribed users
       return;
     }
     
-    // Also check localStorage directly in case of state sync issues
+    // Additional check for localStorage in case of sync issues
     try {
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-      if (storedUser.subscription && storedUser.subscription.status === 'active') {
-        console.log('Agriculture: Found active subscription in localStorage:', storedUser.subscription);
+      if (hasActiveSubscription(storedUser)) {
+        console.log('Agriculture: Found active subscription in localStorage via utilities');
         setHasSubscription(true);
+        setFileLimit(100); // Remove file limit for subscribed users
         return;
       }
     } catch (error) {
-      console.error('Agriculture: Error parsing localStorage user data:', error);
+      console.error('Agriculture: Error checking localStorage subscription:', error);
     }
     
     console.log('Agriculture: No active subscription found');
     setHasSubscription(false);
+    setFileLimit(3); // Limit to 3 files for free users
   }, [user]);
   
   // Check for success message
@@ -611,35 +617,74 @@ const AgriculturePage = () => {
           <div className="datasets-container">
             <h2 className="section-title">Agriculture Datasets</h2>
             
-            <p className="datasets-description">
-              Browse our proprietary agriculture datasets stored in Google Cloud Storage. 
-              Access to 3 free datasets below, upgrade for full access to all datasets.
-            </p>
-            
-            {/* Free datasets section */}
-            <div className="free-datasets-section">
-              <h3>� Agriculture Datasets</h3>
-              <div className="dataset-filters">
-                <div className="filter-group">
-                  <label>Limit:</label>
-                  <select 
-                    value={Math.min(fileLimit, 3)} 
-                    onChange={(e) => setFileLimit(parseInt(e.target.value))}
-                  >
-                    <option value={3}>3 files (Free)</option>
-                  </select>
-                </div>
+            {hasSubscription ? (
+              <>
+                <p className="datasets-description">
+                  ✅ <strong>Premium Access Activated!</strong> Browse our complete collection of proprietary agriculture datasets stored in Google Cloud Storage. 
+                  You have unlimited access to all {metadata?.totalFiles || '78'} files and advanced features.
+                </p>
                 
-                <button 
-                  onClick={() => loadSampleData(null, 3)}
-                  className="load-data-btn"
-                >
-                  Load Free Sample Data
-                </button>
-              </div>
-              
-              <AgricultureCloudData />
-            </div>
+                {/* Premium datasets section for subscribed users */}
+                <div className="premium-datasets-section">
+                  <h3>🌟 Premium Agriculture Datasets (Full Access)</h3>
+                  <div className="dataset-filters">
+                    <div className="filter-group">
+                      <label>Files Available:</label>
+                      <select 
+                        value={fileLimit} 
+                        onChange={(e) => setFileLimit(parseInt(e.target.value))}
+                      >
+                        <option value={10}>10 files</option>
+                        <option value={25}>25 files</option>
+                        <option value={50}>50 files</option>
+                        <option value={100}>All files ({metadata?.totalFiles || '78'})</option>
+                      </select>
+                    </div>
+                    
+                    <button 
+                      onClick={() => loadSampleData(null, fileLimit)}
+                      className="load-data-btn premium"
+                    >
+                      Load Premium Data ({fileLimit} files)
+                    </button>
+                  </div>
+                  
+                  <AgricultureCloudData maxItems={fileLimit} />
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="datasets-description">
+                  Browse our proprietary agriculture datasets stored in Google Cloud Storage. 
+                  Access to 3 free datasets below, upgrade for full access to all {metadata?.totalFiles || '78'} datasets.
+                </p>
+                
+                {/* Free datasets section */}
+                <div className="free-datasets-section">
+                  <h3>🌱 Agriculture Datasets</h3>
+                  <div className="dataset-filters">
+                    <div className="filter-group">
+                      <label>Limit:</label>
+                      <select 
+                        value={Math.min(fileLimit, 3)} 
+                        onChange={(e) => setFileLimit(parseInt(e.target.value))}
+                      >
+                        <option value={3}>3 files (Free)</option>
+                      </select>
+                    </div>
+                    
+                    <button 
+                      onClick={() => loadSampleData(null, 3)}
+                      className="load-data-btn"
+                    >
+                      Load Free Sample Data
+                    </button>
+                  </div>
+                  
+                  <AgricultureCloudData maxItems={3} />
+                </div>
+              </>
+            )}
             
             {/* Locked premium datasets */}
             {!hasSubscription && (

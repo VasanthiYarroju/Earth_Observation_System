@@ -1846,3 +1846,34 @@
   transform: translateY(-1px);
   box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
 }
+
+/* Data loading buttons */
+.load-data-btn {
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.load-data-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 15px rgba(33, 150, 243, 0.3);
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+}
+
+.load-data-btn.premium {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.load-data-btn.premium:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 15px rgba(255, 152, 0, 0.4);
+  background: linear-gradient(135deg, #f57c00, #ef6c00);
+}
