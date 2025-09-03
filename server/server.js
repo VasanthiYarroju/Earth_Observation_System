@@ -30,7 +30,10 @@ app.use(express.json());
 app.use(cors({
   origin: [
     process.env.CLIENT_URL || 'http://localhost:3000',
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    'https://earth-observation-system.vercel.app',
     'https://earth-observation-system-ygrk.vercel.app',
+    'https://earth-observation-system-ygrk-jhves6w5d.vercel.app', // Current deployment URL
     'https://earth-observation-system-ygrk-*.vercel.app' // For preview deployments
   ],
   credentials: true
