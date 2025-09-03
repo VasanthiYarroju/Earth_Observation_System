@@ -4,13 +4,13 @@ import { API_BASE_URL } from './api';
 class FlightService {
   constructor() {
     this.serverURL = `${API_BASE_URL}/api`;
-    this.timeout = 15000;
+    this.timeout = 30000; // Increased timeout to 30 seconds for deployed backend
   }
 
   // Fetch all aircraft states from our server (which connects to OpenSky Network)
   async getAllStates() {
     try {
-      console.log('🛫 Fetching flight data from local server...');
+      console.log('🛫 Fetching flight data from deployed server...');
       
       const response = await axios.get(`${this.serverURL}/flights`, {
         timeout: this.timeout,
@@ -19,14 +19,33 @@ class FlightService {
         }
       });
       
-      if (response.data && response.data.success) {
-        console.log(`✅ Received ${response.data.count} flights from ${response.data.source} source`);
-        return response.data.flights;
+      // Handle different response formats
+      let flightData = null;
+      if (response.data && response.data.success && response.data.flights) {
+        console.log(`✅ Received ${response.data.count || response.data.flights.length} flights from ${response.data.source} source`);
+        flightData = response.data.flights;
+      } else if (response.data && Array.isArray(response.data)) {
+        console.log(`✅ Received ${response.data.length} flights from direct array response`);
+        flightData = response.data;
+      } else if (response.data && response.data.flights && Array.isArray(response.data.flights)) {
+        console.log(`✅ Received ${response.data.flights.length} flights from flights array`);
+        flightData = response.data.flights;
       } else {
         throw new Error('Invalid response format from server');
       }
+      
+      return flightData || [];
     } catch (error) {
       console.error('Error fetching flight data from server:', error.message);
+      
+      // Check if it's a timeout error
+      if (error.code === 'ECONNABORTED') {
+        console.log('⏰ Request timed out, using mock data as fallback');
+      } else if (error.response) {
+        console.log(`❌ Server responded with status: ${error.response.status}`);
+      } else if (error.request) {
+        console.log('🔌 No response received from server');
+      }
       
       // Return mock data as final fallback
       console.log('🔄 Using local mock data as fallback');
@@ -175,5 +194,6 @@ class FlightService {
   }
 }
 
-export default new FlightService();
+const flightService = new FlightService();
+export default flightService;
 

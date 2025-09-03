@@ -258,12 +258,12 @@ const SubscriptionPage = () => {
       // Update user's subscription status using AuthContext
       const subscriptionData = {
         plan: currentPlan.name,
-        planKey: currentPlan.key || Object.keys(subscriptionPlans).find(key => subscriptionPlans[key].name === currentPlan.name),
+        planKey: selectedPlan,
         status: 'active',
         startDate: new Date().toISOString(),
         features: currentPlan.features,
         price: currentPrice,
-        billingCycle: billingCycle
+        billingCycle: billingType
       };
       
       // Update subscription through AuthContext
