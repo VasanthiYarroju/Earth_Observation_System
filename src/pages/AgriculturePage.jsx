@@ -111,15 +111,37 @@ const AgriculturePage = () => {
   
   // Check for subscription status
   useEffect(() => {
+    console.log('Agriculture: Checking subscription status. User:', user);
+    
+    // Check user object for subscription
     if (user && user.subscription && user.subscription.status === 'active') {
+      console.log('Agriculture: Found active subscription in user object:', user.subscription);
       setHasSubscription(true);
+      return;
     }
+    
+    // Also check localStorage directly in case of state sync issues
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      if (storedUser.subscription && storedUser.subscription.status === 'active') {
+        console.log('Agriculture: Found active subscription in localStorage:', storedUser.subscription);
+        setHasSubscription(true);
+        return;
+      }
+    } catch (error) {
+      console.error('Agriculture: Error parsing localStorage user data:', error);
+    }
+    
+    console.log('Agriculture: No active subscription found');
+    setHasSubscription(false);
   }, [user]);
   
   // Check for success message
   useEffect(() => {
     if (location.state?.message) {
+      console.log('Agriculture: Received subscription success message:', location.state.message);
       setShowSuccessMessage(true);
+      setHasSubscription(true); // Immediately update subscription status
       // Hide message after 5 seconds
       setTimeout(() => setShowSuccessMessage(false), 5000);
     }

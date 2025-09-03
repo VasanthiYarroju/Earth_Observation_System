@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { 
   CreditCard, 
   Lock, 
@@ -20,7 +21,7 @@ import './SubscriptionPage.css';
 const SubscriptionPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, updateSubscription } = useAuth();
   
   // Get selected plan from navigation state or default to researcher
   const selectedPlan = location.state?.plan || 'researcher';
@@ -255,18 +256,19 @@ const SubscriptionPage = () => {
       // Here you would integrate with actual payment processor
       // like Stripe, PayPal, etc.
       
-      // Update user's subscription status in localStorage (temporary solution)
-      const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-      const updatedUser = {
-        ...currentUser,
-        subscription: {
-          plan: currentPlan.name,
-          status: 'active',
-          startDate: new Date().toISOString(),
-          features: currentPlan.features
-        }
+      // Update user's subscription status using AuthContext
+      const subscriptionData = {
+        plan: currentPlan.name,
+        planKey: currentPlan.key || Object.keys(subscriptionPlans).find(key => subscriptionPlans[key].name === currentPlan.name),
+        status: 'active',
+        startDate: new Date().toISOString(),
+        features: currentPlan.features,
+        price: currentPrice,
+        billingCycle: billingCycle
       };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      
+      // Update subscription through AuthContext
+      updateSubscription(subscriptionData);
       
       // Show success
       setCurrentStep(4);

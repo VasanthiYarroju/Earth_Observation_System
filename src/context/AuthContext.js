@@ -10,6 +10,7 @@ export const AuthContext = createContext({
     register: () => { console.error('Forgot to wrap component in AuthProvider'); return Promise.reject(new Error('Auth not initialized')); },
     logout: () => { console.error('Forgot to wrap component in AuthProvider'); },
     updateProfile: () => { console.error('Forgot to wrap component in AuthProvider'); return Promise.reject(new Error('Auth not initialized')); },
+    updateSubscription: () => { console.error('Forgot to wrap component in AuthProvider'); },
     user: null,
     isAuthenticated: false,
     isLoading: true,
@@ -144,6 +145,35 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const updateSubscription = (subscriptionData) => {
+    try {
+      console.log('AuthContext: Updating subscription with data:', subscriptionData);
+      
+      // Get current user data
+      const currentUser = user || JSON.parse(localStorage.getItem('user') || '{}');
+      
+      // Update user with subscription info
+      const updatedUser = {
+        ...currentUser,
+        subscription: {
+          ...subscriptionData,
+          status: 'active',
+          activatedAt: new Date().toISOString()
+        }
+      };
+      
+      // Save to localStorage and update state
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      
+      console.log('AuthContext: Subscription updated successfully', updatedUser.subscription);
+      return updatedUser;
+    } catch (error) {
+      console.error('AuthContext: Subscription update error:', error);
+      throw error;
+    }
+  };
+
   const value = {
     user,
     isAuthenticated,
@@ -151,7 +181,8 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
-    updateProfile
+    updateProfile,
+    updateSubscription
   };
 
   return (

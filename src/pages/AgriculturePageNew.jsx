@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getDomainMetadata, getDomainAnalytics, getDomainSampleData } from '../services/domainService';
+import { hasActiveSubscription } from '../utils/subscriptionUtils';
 import { ChevronLeft, BarChart2, Globe, Database, FileText, Activity, CheckCircle, X } from 'lucide-react';
 import './SpaceAnimations.css';
 import './DomainPage.css';
@@ -24,15 +25,17 @@ const AgriculturePage = () => {
   
   // Check for subscription status
   useEffect(() => {
-    if (user && user.subscription && user.subscription.status === 'active') {
-      setHasSubscription(true);
-    }
+    console.log('Agriculture: Checking subscription status. User:', user);
+    const subscriptionStatus = hasActiveSubscription(user);
+    setHasSubscription(subscriptionStatus);
   }, [user]);
   
   // Check for success message from subscription completion
   useEffect(() => {
     if (location.state?.message) {
+      console.log('Agriculture: Received subscription success message:', location.state.message);
       setShowSuccessMessage(true);
+      setHasSubscription(true); // Immediately update subscription status
       setTimeout(() => setShowSuccessMessage(false), 5000);
     }
   }, [location.state]);
@@ -57,6 +60,17 @@ const AgriculturePage = () => {
         domain: 'Agriculture'
       }
     });
+  };
+
+  const refreshSubscriptionStatus = () => {
+    console.log('Manually refreshing subscription status...');
+    const subscriptionStatus = hasActiveSubscription(user);
+    setHasSubscription(subscriptionStatus);
+    
+    if (subscriptionStatus) {
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 3000);
+    }
   };
   
   useEffect(() => {
@@ -277,6 +291,17 @@ const AgriculturePage = () => {
                     >
                       Subscribe Premium - $19.99/month
                     </button>
+                  </div>
+                  <div className="already-subscribed">
+                    <p>Already subscribed? 
+                      <button 
+                        className="refresh-btn" 
+                        onClick={refreshSubscriptionStatus}
+                        style={{ marginLeft: '8px', padding: '4px 12px', background: 'transparent', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer' }}
+                      >
+                        Refresh Status
+                      </button>
+                    </p>
                   </div>
                 </div>
               </div>
