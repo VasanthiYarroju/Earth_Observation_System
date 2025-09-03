@@ -22,31 +22,29 @@ const DOMAIN_BUCKET_MAP = {
 let storage;
 
 try {
-  // First, try to use service account key file (for local development)
-  if (fs.existsSync(KEY_FILE)) {
-    storage = new Storage({ keyFilename: KEY_FILE });
-    console.log('✅ Google Cloud Storage initialized with service account key file');
-  } else {
-    throw new Error('Service account key file not found');
-  }
-} catch (error) {
-  // If file doesn't exist, try environment variables (for production deployment)
-  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
-    try {
+  // For production, prioritize environment variables
+  if (process.env.NODE_ENV === 'production' || process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
       const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
       storage = new Storage({ 
         projectId: credentials.project_id,
         credentials: credentials
       });
       console.log('✅ Google Cloud Storage initialized with environment credentials');
-    } catch (envError) {
-      console.error('❌ Failed to parse Google Cloud credentials from environment:', envError);
-      storage = null;
+    } else {
+      throw new Error('Production environment but no credentials found');
     }
+  } else if (fs.existsSync(KEY_FILE)) {
+    // For local development, use service account key file
+    storage = new Storage({ keyFilename: KEY_FILE });
+    console.log('✅ Google Cloud Storage initialized with service account key file');
   } else {
-    console.log('⚠️ No Google Cloud credentials found. Set GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable for production.');
-    storage = null;
+    throw new Error('No Google Cloud credentials available');
   }
+} catch (error) {
+  console.error('❌ Failed to initialize Google Cloud Storage:', error.message);
+  console.log('⚠️ Make sure GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is set for production.');
+  storage = null;
 }
 
 /**

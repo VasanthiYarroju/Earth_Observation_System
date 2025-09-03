@@ -5,6 +5,7 @@ import express from 'express';
 import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const router = express.Router();
 
@@ -14,8 +15,34 @@ const __dirname = path.dirname(__filename);
 const KEY_FILE = path.resolve(__dirname, "../config/earth-observation-system-1e95036cdd34.json");
 const AGRICULTURE_BUCKET = "eo-agriculture-forestry";
 
-// Initialize Google Cloud Storage
-const storage = new Storage({ keyFilename: KEY_FILE });
+// Initialize Google Cloud Storage with flexible authentication
+let storage;
+
+try {
+  // For production, prioritize environment variables
+  if (process.env.NODE_ENV === 'production' || process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+      const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      storage = new Storage({ 
+        projectId: credentials.project_id,
+        credentials: credentials
+      });
+      console.log('✅ Agriculture routes: Google Cloud Storage initialized with environment credentials');
+    } else {
+      throw new Error('Production environment but no credentials found');
+    }
+  } else if (fs.existsSync(KEY_FILE)) {
+    // For local development, use service account key file
+    storage = new Storage({ keyFilename: KEY_FILE });
+    console.log('✅ Agriculture routes: Google Cloud Storage initialized with service account key file');
+  } else {
+    throw new Error('No Google Cloud credentials available');
+  }
+} catch (error) {
+  console.error('❌ Agriculture routes: Failed to initialize Google Cloud Storage:', error.message);
+  console.log('⚠️ Agriculture routes: Make sure GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable is set for production.');
+  storage = null;
+}
 
 // Helper function to parse CSV string content
 function parseCSVString(csvContent, maxRows = 500) {
