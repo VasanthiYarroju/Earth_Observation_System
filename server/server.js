@@ -42,6 +42,37 @@ app.use(cors({
 // Use agriculture routes
 app.use('/api/agriculture', agricultureRoutes);
 
+// Root route - API information
+app.get('/', (req, res) => {
+  res.json({
+    name: 'Earth Observation System API',
+    version: '1.0.0',
+    description: 'Earth observation system with agriculture monitoring, flight tracking, and user management',
+    endpoints: {
+      '/': 'API information',
+      '/api/health': 'Health check',
+      '/api/info': 'Detailed API information',
+      '/api/auth/signup': 'User registration',
+      '/api/auth/login': 'User login',
+      '/api/auth/verify-otp': 'OTP verification',
+      '/api/flights': 'Flight tracking data',
+      '/api/agriculture/*': 'Agriculture domain endpoints',
+      '/api/domains/:domain/metadata': 'Domain metadata',
+      '/api/domains/:domain/analytics': 'Domain analytics',
+      '/api/domains/:domain/sample': 'Domain sample data'
+    },
+    features: [
+      'User authentication with JWT',
+      'Real-time flight tracking',
+      'Agriculture data from Google Cloud',
+      'Email OTP verification',
+      'Cross-origin resource sharing (CORS)',
+      'MongoDB user management'
+    ],
+    status: 'operational'
+  });
+});
+
 // ==================== MongoDB ====================
 mongoose.connect(process.env.MONGODB_URI, {})
   .then(() => console.log('✅ MongoDB connected'))
@@ -846,6 +877,64 @@ function generateMockFlights() {
     
     return mockFlights;
 }
+
+// ==================== Domain API Endpoints ====================
+
+// Get domain metadata
+app.get('/api/domains/:domain/metadata', authenticateToken, async (req, res) => {
+  try {
+    const { domain } = req.params;
+    console.log(`🔍 Getting metadata for domain: ${domain}`);
+    
+    const metadata = await getDomainDatasetMetadata(domain);
+    res.json(metadata);
+  } catch (error) {
+    console.error(`❌ Error getting ${req.params.domain} metadata:`, error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      message: `Failed to fetch ${req.params.domain} metadata`
+    });
+  }
+});
+
+// Get domain analytics
+app.get('/api/domains/:domain/analytics', authenticateToken, async (req, res) => {
+  try {
+    const { domain } = req.params;
+    console.log(`📊 Getting analytics for domain: ${domain}`);
+    
+    const analytics = await getDomainAnalytics(domain);
+    res.json(analytics);
+  } catch (error) {
+    console.error(`❌ Error getting ${req.params.domain} analytics:`, error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      message: `Failed to fetch ${req.params.domain} analytics`
+    });
+  }
+});
+
+// Get domain sample data
+app.get('/api/domains/:domain/sample', authenticateToken, async (req, res) => {
+  try {
+    const { domain } = req.params;
+    const { category, limit = 10 } = req.query;
+    
+    console.log(`📋 Getting sample data for domain: ${domain}, category: ${category}, limit: ${limit}`);
+    
+    const sampleData = await getSampleData(domain, category, parseInt(limit));
+    res.json(sampleData);
+  } catch (error) {
+    console.error(`❌ Error getting ${req.params.domain} sample data:`, error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      message: `Failed to fetch ${req.params.domain} sample data`
+    });
+  }
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
