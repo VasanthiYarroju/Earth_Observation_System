@@ -580,12 +580,16 @@ async function getAccessToken() {
 // Function to make authenticated API request
 async function makeAuthenticatedRequest(url) {
     return new Promise(async (resolve, reject) => {
+        const timeout = 15000; // 15 second timeout
+        let requestTimeout;
+        
         try {
             let options = {
                 headers: {
                     'User-Agent': 'Earth Observation System/1.0',
                     'Accept': 'application/json'
-                }
+                },
+                timeout: timeout
             };
 
             // Try OAuth2 first, then fall back to Basic Auth
@@ -606,8 +610,13 @@ async function makeAuthenticatedRequest(url) {
                 console.log('🔐 Using Basic Authentication...');
             }
 
-            https.get(url, options, (response) => {
+            const request = https.get(url, options, (response) => {
                 let data = '';
+                
+                // Clear the timeout since we got a response
+                if (requestTimeout) {
+                    clearTimeout(requestTimeout);
+                }
                 
                 response.on('data', (chunk) => {
                     data += chunk;
@@ -620,10 +629,28 @@ async function makeAuthenticatedRequest(url) {
                     });
                 });
             }).on('error', (error) => {
+                if (requestTimeout) {
+                    clearTimeout(requestTimeout);
+                }
                 reject(error);
             });
 
+            // Set up timeout
+            requestTimeout = setTimeout(() => {
+                request.destroy();
+                reject(new Error(`Request timeout after ${timeout}ms`));
+            }, timeout);
+
+            // Handle socket timeout
+            request.on('timeout', () => {
+                request.destroy();
+                reject(new Error('Request socket timeout'));
+            });
+
         } catch (error) {
+            if (requestTimeout) {
+                clearTimeout(requestTimeout);
+            }
             reject(error);
         }
     });
