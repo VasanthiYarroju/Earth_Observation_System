@@ -1,7 +1,9 @@
 .earth-map-container {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: 60vh; /* Use viewport height instead of fixed pixels */
+  min-height: 400px; /* Ensure minimum height */
+  max-height: 800px; /* Cap maximum height */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -437,7 +439,9 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .earth-map-container {
-    height: 500px;
+    height: 50vh; /* Use viewport height for tablets */
+    min-height: 350px;
+    max-height: 600px;
   }
   
   .map-controls {
@@ -500,7 +504,9 @@
   }
   
   .earth-map-container {
-    height: 600px;
+    height: 55vh;
+    min-height: 380px;
+    max-height: 700px;
   }
   
   .info-panel {
@@ -570,7 +576,9 @@
   }
   
   .earth-map-container {
-    height: 500px;
+    height: 45vh; /* Use viewport height for mobile */
+    min-height: 300px;
+    max-height: 500px;
   }
   
   .map-controls {
@@ -668,20 +676,28 @@
   }
   
   .basic-earth-view {
-    height: 500px;
+    height: 50vh;
+    min-height: 350px;
+    max-height: 600px;
   }
   
   .static-earth-container {
-    height: 500px;
+    height: 50vh;
+    min-height: 350px;
+    max-height: 600px;
   }
   
   .fallback-map-container {
-    height: 500px;
+    height: 50vh;
+    min-height: 350px;
+    max-height: 600px;
     padding: 15px;
   }
   
   .fallback-map-image {
-    height: 300px;
+    height: 30vh;
+    min-height: 200px;
+    max-height: 350px;
   }
 }
 
@@ -720,7 +736,9 @@
   }
   
   .earth-map-container {
-    height: 400px;
+    height: 40vh; /* Use viewport height for mobile phones */
+    min-height: 280px;
+    max-height: 450px;
     border-radius: 8px;
   }
   
@@ -861,7 +879,9 @@
   }
   
   .basic-earth-view {
-    height: 400px;
+    height: 40vh;
+    min-height: 280px;
+    max-height: 450px;
     border-radius: 8px;
   }
   
@@ -935,7 +955,9 @@
   }
   
   .static-earth-container {
-    height: 400px;
+    height: 40vh;
+    min-height: 280px;
+    max-height: 450px;
     border-radius: 8px;
   }
   
@@ -975,7 +997,9 @@
   }
   
   .fallback-map-container {
-    height: 400px;
+    height: 40vh;
+    min-height: 280px;
+    max-height: 450px;
     padding: 10px;
   }
   
@@ -1064,7 +1088,9 @@
   }
   
   .earth-map-container {
-    height: 350px;
+    height: 35vh; /* Use viewport height for extra small devices */
+    min-height: 250px;
+    max-height: 400px;
   }
   
   .map-controls {
@@ -1124,7 +1150,9 @@
   }
   
   .basic-earth-view {
-    height: 350px;
+    height: 35vh;
+    min-height: 250px;
+    max-height: 400px;
   }
   
   .basic-earth-header {
@@ -1171,7 +1199,9 @@
   }
   
   .static-earth-container {
-    height: 350px;
+    height: 35vh;
+    min-height: 250px;
+    max-height: 400px;
   }
   
   .static-earth-header {
@@ -1187,7 +1217,9 @@
   }
   
   .fallback-map-container {
-    height: 350px;
+    height: 35vh;
+    min-height: 250px;
+    max-height: 400px;
     padding: 8px;
   }
   
