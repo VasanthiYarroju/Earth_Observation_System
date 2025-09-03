@@ -1,70 +1,234 @@
-# Getting Started with Create React App
+# 🌍 Earth Observation System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive Earth observation and agriculture monitoring system built with React and Node.js, featuring real-time satellite data visualization, agriculture analysis, and interactive mapping capabilities.
 
-## Available Scripts
+## 🚀 **Live Demo**
 
-In the project directory, you can run:
+- **Frontend**: [https://earth-observation-system-ygrk.vercel.app/earth](https://earth-observation-system-ygrk.vercel.app/earth)
+- **Backend API**: [https://earth-observationsystem.onrender.com](https://earth-observationsystem.onrender.com)
 
-### `npm start`
+## 🌟 **Features**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **🛰️ Real-time Earth Observation**: Interactive 3D globe with satellite data visualization
+- **🌾 Agriculture Monitoring**: Advanced agriculture sector analysis with cloud data integration
+- **🗺️ Interactive Maps**: Multiple mapping solutions with Leaflet and Mapbox integration
+- **📊 Data Analytics**: Comprehensive data extraction and analysis tools
+- **👤 User Authentication**: Secure login/register with OTP verification
+- **☁️ Cloud Integration**: Google Cloud Platform integration for data storage and processing
+- **📧 Email Services**: Automated notifications and communications
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ **Tech Stack**
 
-### `npm test`
+### Frontend
+- **React 18** - Modern UI library with hooks and context
+- **Three.js & React Three Fiber** - 3D graphics and globe visualization
+- **Leaflet & React-Leaflet** - Interactive mapping
+- **Mapbox GL** - Advanced mapping and geospatial visualization
+- **Framer Motion** - Smooth animations and transitions
+- **Axios** - API communication
+- **React Router DOM** - Client-side routing
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend
+- **Node.js & Express** - Server-side runtime and framework
+- **JWT Authentication** - Secure token-based authentication
+- **Nodemailer** - Email service integration
+- **Google Cloud Storage** - Cloud data storage and retrieval
+- **RESTful APIs** - Standard API architecture
 
-### `npm run build`
+## 📦 **Installation & Setup**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
+- Node.js (v22.x)
+- npm (v10.x)
+- Mapbox Account (for mapping features)
+- Google Cloud Platform Account (for data services)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Local Development
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/VasanthiYarroju/Earth_Observation_System.git
+   cd Earth_Observation_System
+   ```
 
-### `npm run eject`
+2. **Install dependencies**
+   ```bash
+   # Install frontend dependencies
+   npm install
+   
+   # Install backend dependencies
+   cd server
+   npm install
+   cd ..
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Environment Configuration**
+   
+   Copy the example environment file and configure it:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Update `.env` with your configuration:
+   ```properties
+   # Mapbox Token for map visualization
+   REACT_APP_MAPBOX_TOKEN=your_mapbox_token_here
+   
+   # Backend API URL (for local development)
+   REACT_APP_API_BASE_URL=http://localhost:8080
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **Start the development servers**
+   
+   ```bash
+   # Start frontend (React)
+   npm run dev:client
+   
+   # In a new terminal, start backend (Express)
+   npm start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+5. **Access the application**
+   - Frontend: [http://localhost:3000](http://localhost:3000)
+   - Backend API: [http://localhost:8080](http://localhost:8080)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🚀 **Deployment**
 
-## Learn More
+### Frontend (Vercel)
+The frontend is deployed on Vercel with automatic deployments from the main branch.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Environment Variables on Vercel:**
+- `REACT_APP_MAPBOX_TOKEN`: Your Mapbox access token
+- `REACT_APP_API_BASE_URL`: Your deployed backend URL
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Backend (Render)
+The backend is deployed on Render with automatic deployments.
 
-### Code Splitting
+**Environment Variables on Render:**
+- Database configurations
+- API keys and secrets
+- Email service credentials
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📁 **Project Structure**
 
-### Analyzing the Bundle Size
+```
+etr-clean/
+├── public/                 # Static assets
+│   ├── images/            # Application images and icons
+│   └── models/            # 3D models for globe visualization
+├── src/
+│   ├── components/        # React components
+│   │   ├── AgricultureCloudData.jsx
+│   │   ├── EarthMap.jsx
+│   │   ├── EOSAgricultureMap.jsx
+│   │   └── ...
+│   ├── pages/             # Page components
+│   │   ├── Earth.jsx
+│   │   ├── FlightsPage.jsx
+│   │   ├── Home.jsx
+│   │   └── ...
+│   ├── services/          # API and external service integrations
+│   │   ├── api.js
+│   │   ├── agricultureDataExtractor.js
+│   │   └── ...
+│   ├── context/           # React context providers
+│   └── utils/             # Utility functions
+├── server/                # Backend Express server
+│   ├── routes/           # API route definitions
+│   ├── services/         # Business logic services
+│   ├── config/           # Configuration files
+│   └── server.js         # Main server file
+├── .env.example          # Environment variables template
+├── vercel.json           # Vercel deployment configuration
+└── package.json          # Project dependencies and scripts
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔧 **Available Scripts**
 
-### Making a Progressive Web App
+### Frontend Development
+- `npm run dev:client` - Start React development server
+- `npm run build:client` - Build React app for production
+- `npm test` - Run test suite
+- `npm run eject` - Eject from Create React App (irreversible)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Backend Development
+- `npm start` - Start Express server (production)
+- `npm run dev` - Start Express server with nodemon (development)
 
-### Advanced Configuration
+### Full Stack
+- `npm run build` - Build frontend and install backend dependencies
+- `npm run heroku-postbuild` - Build script for deployment platforms
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🌍 **Key Components**
 
-### Deployment
+### Earth Visualization
+- **BasicEarthView**: Simple 3D Earth representation
+- **EarthMap**: Interactive Earth with satellite overlay
+- **GlobalAgricultureMap**: Agriculture-focused Earth visualization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Agriculture Monitoring
+- **AgricultureCloudData**: Cloud-based agriculture data integration
+- **EOSAgricultureMap**: Enhanced agriculture monitoring system
+- **RealDataAgricultureMap**: Real-time agriculture data visualization
 
-### `npm run build` fails to minify
+### Mapping Solutions
+- **LeafletMap**: OpenStreetMap-based interactive maps
+- **MapWrapper**: Unified mapping interface
+- **StaticEarthMap**: Static Earth visualization component
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🔒 **Authentication & Security**
+
+- JWT-based authentication system
+- OTP verification for secure registration
+- Protected routes with authentication middleware
+- Secure API endpoints with token validation
+
+## 🌐 **API Integration**
+
+### External Services
+- **Mapbox API**: Advanced mapping and geocoding
+- **Google Cloud Platform**: Data storage and processing
+- **Email Services**: SMTP integration for notifications
+
+### Internal APIs
+- Authentication endpoints (`/api/auth/*`)
+- User management (`/api/user/*`)
+- Agriculture data (`/api/agriculture/*`)
+- Real coordinates service (`/api/real-coordinates/*`)
+
+## 📊 **Data Sources**
+
+- Satellite imagery and observation data
+- Agriculture sector information
+- Real-time coordinate data
+- Cloud-based storage systems
+
+## 🤝 **Contributing**
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 **Author**
+
+**Vasanthi Yarroju**
+- GitHub: [@VasanthiYarroju](https://github.com/VasanthiYarroju)
+- Repository: [Earth_Observation_System](https://github.com/VasanthiYarroju/Earth_Observation_System)
+
+## 🙏 **Acknowledgments**
+
+- React team for the amazing framework
+- Three.js community for 3D visualization tools
+- Mapbox for geospatial services
+- Google Cloud Platform for data infrastructure
+- Open source contributors and the developer community
+
+---
+
+**📧 For support or questions, please open an issue on GitHub.**
