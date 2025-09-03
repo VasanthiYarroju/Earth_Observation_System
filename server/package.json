@@ -19,6 +19,7 @@
     "express": "^4.21.2",
     "express-rate-limit": "^6.11.2",
     "helmet": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
     "mapbox-gl": "^3.14.0",
     "mongoose": "^8.17.2",
     "nodemailer": "^6.10.1",
