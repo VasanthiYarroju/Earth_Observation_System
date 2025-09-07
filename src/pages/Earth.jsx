@@ -1231,7 +1231,7 @@ function HeroSection({ onGetStarted }) {
             color: 'white',
             textShadow: '0 0 10px rgba(255,255,255,0.5)',
           }}>
-            AWAY SPACE COVENANT
+            PROJECT ETRx - AEROVISION
           </span>
         </motion.div>
 
@@ -1301,7 +1301,7 @@ function HeroSection({ onGetStarted }) {
             color: '#4fc3f7'
           }}
         >
-          ETRx - Earth Observation
+          Project ETRx - AeroVision
         </motion.h1>
 
         <motion.p
@@ -1534,6 +1534,313 @@ Away Space Covenant (AwSc) is India's first space ecosystem, pioneering space to
     </section>
   );
 }
+function TeamSection() {
+  return (
+    <section id="team" style={{
+      padding: '80px 8%',
+      color: 'white',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'radial-gradient(circle at center, rgba(37, 91, 145, 0.2) 0%, rgba(2, 12, 27, 1) 70%)'
+    }}>
+      {/* Stars Effect */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `
+          radial-gradient(white 1px, transparent 1px),
+          radial-gradient(white 1px, transparent 1px)
+        `,
+        backgroundSize: '50px 50px',
+        backgroundPosition: '0 0, 25px 25px',
+        opacity: 0.1,
+        zIndex: -2
+      }}></div>
+
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        width: '100%',
+        position: 'relative',
+        zIndex: 1
+      }}>
+        {/* Project Title Section */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '60px'
+        }}>
+          <h1 style={{
+            fontSize: '3.5rem',
+            fontWeight: 'bold',
+            marginBottom: '20px',
+            color: '#4fc3f7',
+            textShadow: '0 0 20px rgba(79, 195, 247, 0.5)'
+          }}>
+            Project ETRx - AeroVision
+          </h1>
+          
+          {/* ETR Picture */}
+          <div style={{
+            margin: '40px auto',
+            maxWidth: '600px',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            boxShadow: '0 15px 30px rgba(0, 0, 0, 0.5)',
+            border: '2px solid rgba(79, 195, 247, 0.3)'
+          }}>
+            <img
+              src="/images/etr_pic.jpg"
+              alt="Project ETRx - AeroVision"
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block'
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Who We Are Section */}
+        <div style={{
+          marginBottom: '60px',
+          textAlign: 'center'
+        }}>
+          <h2 style={{
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            marginBottom: '30px',
+            color: '#4fc3f7'
+          }}>
+            🌍 Who We Are
+          </h2>
+          
+          <p style={{
+            fontSize: '1.2rem',
+            lineHeight: '1.8',
+            color: 'rgba(255, 255, 255, 0.9)',
+            maxWidth: '900px',
+            margin: '0 auto',
+            marginBottom: '40px'
+          }}>
+            At ETRx – EO: AeroVision Project, we are a global team of dreamers and doers united by a single vision: 
+            to harness Earth Observation and space innovation for a sustainable and inspiring future.
+          </p>
+        </div>
+
+        {/* Team Members */}
+        <div style={{
+          marginBottom: '60px'
+        }}>
+          <h3 style={{
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            marginBottom: '40px',
+            color: 'white',
+            textAlign: 'center'
+          }}>
+            Our Team
+          </h3>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+            gap: '30px'
+          }}>
+            {/* Jose Isaac Christy B */}
+            <div style={{
+              background: 'rgba(37, 91, 145, 0.15)',
+              borderRadius: '12px',
+              padding: '30px',
+              borderLeft: '4px solid #4fc3f7',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <div style={{
+                fontSize: '2rem',
+                marginBottom: '20px'
+              }}>
+                🚀
+              </div>
+              <h4 style={{
+                fontSize: '1.5rem',
+                fontWeight: 'bold',
+                marginBottom: '10px',
+                color: '#4fc3f7'
+              }}>
+                Jose Isaac Christy B
+              </h4>
+              <p style={{
+                fontSize: '1rem',
+                color: 'rgba(255, 255, 255, 0.8)',
+                marginBottom: '15px',
+                fontWeight: 'bold'
+              }}>
+                Founder | Mechanical & Aeronautical Engineer | Astropreneur
+              </p>
+              <p style={{
+                fontSize: '0.95rem',
+                lineHeight: '1.6',
+                color: 'rgba(255, 255, 255, 0.8)'
+              }}>
+                Jose is the visionary behind Away Space Covenant (AwSc) and the driving force of AeroVision. 
+                With advanced studies in Aeronautical Engineering and Space Entrepreneurship, plus hands-on projects 
+                in Earth Observation, satellites, and propulsion design, he combines engineering mastery with entrepreneurial 
+                leadership. A polymath at heart—engineer, artist, writer, and martial artist—he believes in 
+                "Honoring Excellence, Inspiring a New Era of Greatness."
+              </p>
+            </div>
+
+            {/* Esther Maina */}
+            <div style={{
+              background: 'rgba(37, 91, 145, 0.15)',
+              borderRadius: '12px',
+              padding: '30px',
+              borderLeft: '4px solid #4fc3f7',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <div style={{
+                fontSize: '2rem',
+                marginBottom: '20px'
+              }}>
+                🌐
+              </div>
+              <h4 style={{
+                fontSize: '1.5rem',
+                fontWeight: 'bold',
+                marginBottom: '10px',
+                color: '#4fc3f7'
+              }}>
+                Esther Maina
+              </h4>
+              <p style={{
+                fontSize: '1rem',
+                color: 'rgba(255, 255, 255, 0.8)',
+                marginBottom: '15px',
+                fontWeight: 'bold'
+              }}>
+                Geospatial Developer | Remote Sensing Expert | Space Advocate
+              </p>
+              <p style={{
+                fontSize: '0.95rem',
+                lineHeight: '1.6',
+                color: 'rgba(255, 255, 255, 0.8)'
+              }}>
+                Esther is a Geospatial Engineer at the Kenya Space Agency, where she leads national projects in agriculture, 
+                disaster risk reduction, and environmental monitoring using Earth Observation. An IAF Launchpad and 
+                Space4Women mentee, she is passionate about empowering communities through data and inspiring the 
+                next generation of space leaders across Africa.
+              </p>
+            </div>
+
+            {/* Muhammad Faraz */}
+            <div style={{
+              background: 'rgba(37, 91, 145, 0.15)',
+              borderRadius: '12px',
+              padding: '30px',
+              borderLeft: '4px solid #4fc3f7',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <div style={{
+                fontSize: '2rem',
+                marginBottom: '20px'
+              }}>
+                🌌
+              </div>
+              <h4 style={{
+                fontSize: '1.5rem',
+                fontWeight: 'bold',
+                marginBottom: '10px',
+                color: '#4fc3f7'
+              }}>
+                Muhammad Faraz
+              </h4>
+              <p style={{
+                fontSize: '1rem',
+                color: 'rgba(255, 255, 255, 0.8)',
+                marginBottom: '15px',
+                fontWeight: 'bold'
+              }}>
+                Management Engineer | Strategist | Space Entrepreneur in the Making
+              </p>
+              <p style={{
+                fontSize: '0.95rem',
+                lineHeight: '1.6',
+                color: 'rgba(255, 255, 255, 0.8)'
+              }}>
+                Faraz blends engineering, management, and entrepreneurial insight. Currently at Marposs and pursuing 
+                studies in Management Engineering and Space Entrepreneurship, he has held global leadership roles at 
+                Junior Enterprises and is recognized as an Aspire Leaders Finalist and Aurora Fellow. He thrives at 
+                the intersection of technology, strategy, and collaboration.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Team Summary */}
+        <div style={{
+          textAlign: 'center',
+          background: 'rgba(79, 195, 247, 0.1)',
+          borderRadius: '12px',
+          padding: '40px',
+          border: '2px solid rgba(79, 195, 247, 0.3)',
+          marginBottom: '40px'
+        }}>
+          <h3 style={{
+            fontSize: '1.8rem',
+            fontWeight: 'bold',
+            marginBottom: '20px',
+            color: '#4fc3f7'
+          }}>
+            ✨ Together, we are ETRx – EO: AeroVision
+          </h3>
+          <p style={{
+            fontSize: '1.1rem',
+            lineHeight: '1.7',
+            color: 'rgba(255, 255, 255, 0.9)',
+            maxWidth: '800px',
+            margin: '0 auto'
+          }}>
+            Merging engineering, geospatial intelligence, and entrepreneurial spirit to design solutions that 
+            impact Earth today and inspire humanity's journey into space tomorrow.
+          </p>
+          
+          <div style={{
+            marginTop: '30px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '30px'
+          }}>
+            <div style={{
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '2.5rem',
+                fontWeight: 'bold',
+                color: '#4fc3f7'
+              }}>
+                3
+              </div>
+              <div style={{
+                fontSize: '1rem',
+                color: 'rgba(255, 255, 255, 0.8)'
+              }}>
+                Team Members
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ContactSection() {
   return (
     <section id="contact" style={{
@@ -1726,6 +2033,7 @@ export default function EarthA() {
         <FeaturesSection />
         <MoreDataSection />
         <CompanySection />
+        <TeamSection />
         <ContactSection />
       </div>
     </div>

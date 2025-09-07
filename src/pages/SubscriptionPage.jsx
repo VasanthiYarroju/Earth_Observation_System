@@ -22,14 +22,11 @@ const SubscriptionPage = () => {
   const location = useLocation();
   const { user, updateSubscription } = useAuth();
   
-  // Get selected plan from navigation state or default to researcher
   const selectedPlan = location.state?.plan || 'researcher';
   
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  
-  // Form states
   const [billingInfo, setBillingInfo] = useState({
     firstName: '',
     lastName: '',
@@ -52,7 +49,6 @@ const SubscriptionPage = () => {
   
   const [billingType, setBillingType] = useState('monthly');
   
-  // Plan configurations
   const plans = {
     explorer: {
       name: 'Explorer',
@@ -109,7 +105,6 @@ const SubscriptionPage = () => {
   const currentPrice = billingType === 'monthly' ? currentPlan.monthly : currentPlan.yearly;
   const savings = billingType === 'yearly' ? (currentPlan.monthly * 12) - currentPlan.yearly : 0;
   
-  // Validation functions
   const validateBillingInfo = () => {
     const newErrors = {};
     
@@ -138,18 +133,15 @@ const SubscriptionPage = () => {
     if (!paymentInfo.cvv) newErrors.cvv = 'CVV is required';
     if (!paymentInfo.nameOnCard.trim()) newErrors.nameOnCard = 'Name on card is required';
     
-    // Card number validation (basic length check)
     const cardNum = paymentInfo.cardNumber.replace(/\s/g, '');
     if (cardNum && (cardNum.length < 13 || cardNum.length > 19)) {
       newErrors.cardNumber = 'Please enter a valid card number';
     }
     
-    // CVV validation
     if (paymentInfo.cvv && (paymentInfo.cvv.length < 3 || paymentInfo.cvv.length > 4)) {
       newErrors.cvv = 'CVV must be 3 or 4 digits';
     }
     
-    // Expiry date validation
     if (paymentInfo.expiryDate) {
       const [month, year] = paymentInfo.expiryDate.split('/');
       const currentDate = new Date();
@@ -190,14 +182,12 @@ const SubscriptionPage = () => {
     return v;
   };
   
-  // Event handlers
   const handleBillingInfoChange = (field, value) => {
     setBillingInfo(prev => ({
       ...prev,
       [field]: value
     }));
     
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({
         ...prev,
@@ -222,7 +212,6 @@ const SubscriptionPage = () => {
       [field]: formattedValue
     }));
     
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({
         ...prev,
@@ -249,13 +238,8 @@ const SubscriptionPage = () => {
     setIsLoading(true);
     
     try {
-      // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Here you would integrate with actual payment processor
-      // like Stripe, PayPal, etc.
-      
-      // Update user's subscription status using AuthContext
       const subscriptionData = {
         plan: currentPlan.name,
         planKey: selectedPlan,
@@ -266,19 +250,15 @@ const SubscriptionPage = () => {
         billingCycle: billingType
       };
       
-      // Update subscription through AuthContext
       updateSubscription(subscriptionData);
       
-      // Show success
       setCurrentStep(4);
       
-      // Redirect based on where they came from
       const redirectPath = location.state?.redirectAfter || '/home';
       const domain = location.state?.domain;
       
       setTimeout(() => {
         if (domain === 'Agriculture') {
-          // If they came from Agriculture limited page, redirect to full Agriculture page
           navigate('/agriculture', { 
             state: { 
               message: 'Subscription activated! You now have full access to Agriculture data.',
@@ -286,7 +266,6 @@ const SubscriptionPage = () => {
             }
           });
         } else {
-          // Otherwise redirect to the specified path or home
           navigate(redirectPath, { 
             state: { 
               message: 'Subscription activated successfully!',

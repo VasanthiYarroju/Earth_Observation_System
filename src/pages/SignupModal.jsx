@@ -188,6 +188,8 @@ const handleSubmit = async (e) => {
         borderRadius: '10px',
         width: '400px',
         maxWidth: '90%',
+        maxHeight: '90vh',
+        overflowY: 'auto',
         border: '1px solid rgba(79, 195, 247, 0.3)',
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
         transform: 'scale(1)',
