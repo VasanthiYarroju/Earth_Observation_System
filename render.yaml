@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: earth-observation-system
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: MONGODB_URI
+        value: mongodb+srv://sofiakomali21:smorty2101@cluster0.eqh13bl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - key: OPENSKY_CLIENT_ID
+        value: yvasanthi314-api-client
+      - key: OPENSKY_CLIENT_SECRET
+        value: uVrUHLnn0CH7ffmSFH3pDV3Kl446LhpV
+      - key: OPENSKY_USERNAME
+        value: yvasanthi314
+      - key: OPENSKY_PASSWORD
+        value: Vasanthi@123
+      - key: JWT_SECRET
+        value: mySuperRandomGeneratedSecretHere
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: 465
+      - key: EMAIL_SECURE
+        value: true
+      - key: EMAIL_USER
+        value: sofiakomali21@gmail.com
+      - key: EMAIL_PASS
+        value: obhspvehlqayaixs
+      - key: CLIENT_URL
+        value: https://earth-observation-system.vercel.app
+      - key: FRONTEND_URL
+        value: https://earth-observation-system.vercel.app

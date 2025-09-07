@@ -481,11 +481,11 @@ app.get('/api/auth/check-status/:email', async (req, res) => {
 
 // ==================== OpenSky Network Flight Tracking ====================
 
-// OpenSky Network credentials
-const OPENSKY_CLIENT_ID = 'yvasanthi314-api-client';
-const OPENSKY_CLIENT_SECRET = 'mQwg9CACBuE8mIrQjfIdFSSiKFuNItO7';
-const OPENSKY_USERNAME = 'yvasanthi314';
-const OPENSKY_PASSWORD = 'Vasanthi@123';
+// OpenSky Network credentials - Updated with new credentials
+const OPENSKY_CLIENT_ID = process.env.OPENSKY_CLIENT_ID || 'yvasanthi314-api-client';
+const OPENSKY_CLIENT_SECRET = process.env.OPENSKY_CLIENT_SECRET || 'uVrUHLnn0CH7ffmSFH3pDV3Kl446LhpV';
+const OPENSKY_USERNAME = process.env.OPENSKY_USERNAME || 'yvasanthi314';
+const OPENSKY_PASSWORD = process.env.OPENSKY_PASSWORD || 'Yarrojuvasanthi@2005';
 
 // OpenSky Network API endpoints
 // const OPENSKY_TOKEN_URL = 'https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token'; // Commented out as it's unused
