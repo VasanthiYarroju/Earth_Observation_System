@@ -481,11 +481,10 @@ app.get('/api/auth/check-status/:email', async (req, res) => {
 
 // ==================== OpenSky Network Flight Tracking ====================
 
-// OpenSky Network credentials - Updated with new credentials
+
 const OPENSKY_CLIENT_ID = process.env.OPENSKY_CLIENT_ID || 'yvasanthi314-api-client';
 const OPENSKY_CLIENT_SECRET = process.env.OPENSKY_CLIENT_SECRET || 'uVrUHLnn0CH7ffmSFH3pDV3Kl446LhpV';
 const OPENSKY_USERNAME = process.env.OPENSKY_USERNAME || 'yvasanthi314';
-const OPENSKY_PASSWORD = process.env.OPENSKY_PASSWORD || 'Yarrojuvasanthi@2005';
 
 // OpenSky Network API endpoints
 // const OPENSKY_TOKEN_URL = 'https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token'; // Commented out as it's unused
@@ -494,7 +493,7 @@ const OPENSKY_API_URL = 'https://opensky-network.org/api/states/all';
 // Token management
 let accessToken = null;
 let tokenExpiry = null;
-let authMethod = 'oauth2'; 
+let authMethod = 'oauth2'; // Force OAuth2 since it's working
 
 // Rate limiting variables
 let lastSuccessfulData = null;
@@ -577,10 +576,10 @@ async function getAccessToken() {
     });
 }
 
-// Function to make authenticated API request
+// Function to make authenticated API request - OAuth2 ONLY
 async function makeAuthenticatedRequest(url) {
     return new Promise(async (resolve, reject) => {
-        const timeout = 8000; // Reduced timeout to 8 seconds for faster fallback
+        const timeout = 15000; // Increased timeout for OAuth2
         let requestTimeout;
         
         try {
@@ -592,22 +591,15 @@ async function makeAuthenticatedRequest(url) {
                 timeout: timeout
             };
 
-            // Try OAuth2 first, then fall back to Basic Auth
-            if (authMethod === 'oauth2') {
-                try {
-                    const token = await getAccessToken();
-                    options.headers['Authorization'] = `Bearer ${token}`;
-                } catch (error) {
-                    console.log('🔄 OAuth2 failed, switching to Basic Authentication...');
-                    authMethod = 'basic';
-                }
-            }
-
-            // Use Basic Authentication if OAuth2 failed or is set to basic
-            if (authMethod === 'basic') {
-                const credentials = Buffer.from(`${OPENSKY_USERNAME}:${OPENSKY_PASSWORD}`).toString('base64');
-                options.headers['Authorization'] = `Basic ${credentials}`;
-                console.log('🔐 Using Basic Authentication...');
+            // Use OAuth2 authentication only (since it's working)
+            try {
+                const token = await getAccessToken();
+                options.headers['Authorization'] = `Bearer ${token}`;
+                console.log('� Using OAuth2 Authentication...');
+            } catch (error) {
+                console.log('❌ OAuth2 failed:', error.message);
+                reject(new Error('OAuth2 authentication failed'));
+                return;
             }
 
             const request = https.get(url, options, (response) => {
@@ -656,7 +648,7 @@ async function makeAuthenticatedRequest(url) {
     });
 }
 
-// Flight data endpoint
+// Flight data endpoint - LIVE DATA ONLY
 app.get('/api/flights', async (req, res) => {
     try {
         const now = Date.now();
@@ -669,92 +661,84 @@ app.get('/api/flights', async (req, res) => {
                 flights: lastSuccessfulData,
                 count: lastSuccessfulData.length,
                 timestamp: new Date().toISOString(),
-                source: 'cached',
+                source: 'cached_live_data',
                 auth_method: authMethod
             });
             return;
         }
 
-        console.log('🛫 Fetching authenticated flight data from OpenSky Network...');
+        console.log('🛫 Fetching LIVE flight data from OpenSky Network via OAuth2...');
         
         const response = await makeAuthenticatedRequest(OPENSKY_API_URL);
         
         if (response.statusCode === 429) {
-            console.log('⚠️  Rate limited by OpenSky API, using cached or mock data');
-            const fallbackData = lastSuccessfulData || generateMockFlights();
-            res.json({
-                success: true,
-                flights: fallbackData,
-                count: fallbackData.length,
-                timestamp: new Date().toISOString(),
-                source: lastSuccessfulData ? 'cached' : 'mock',
-                auth_method: authMethod
-            });
+            console.log('⚠️  Rate limited by OpenSky API');
+            if (lastSuccessfulData) {
+                res.json({
+                    success: true,
+                    flights: lastSuccessfulData,
+                    count: lastSuccessfulData.length,
+                    timestamp: new Date().toISOString(),
+                    source: 'cached_live_data',
+                    auth_method: authMethod,
+                    message: 'Rate limited - returning cached live data'
+                });
+            } else {
+                res.status(429).json({
+                    success: false,
+                    error: 'Rate limited and no cached data available',
+                    message: 'Please try again in a few moments'
+                });
+            }
             return;
         }
 
         if (response.statusCode === 401 || response.statusCode === 403) {
-            console.log(`🔐 Authentication failed (${response.statusCode}) - trying alternative method`);
+            console.log(`🔐 Authentication failed (${response.statusCode})`);
             
-            // Switch authentication method and retry once
-            if (authMethod === 'oauth2') {
-                authMethod = 'basic';
+            // Try to refresh OAuth2 token
+            try {
                 accessToken = null;
                 tokenExpiry = null;
-                console.log('🔄 Switching to Basic Authentication and retrying...');
+                const retryResponse = await makeAuthenticatedRequest(OPENSKY_API_URL);
                 
-                try {
-                    const retryResponse = await makeAuthenticatedRequest(OPENSKY_API_URL);
-                    if (retryResponse.statusCode === 200) {
-                        const jsonData = JSON.parse(retryResponse.data);
-                        if (jsonData && jsonData.states) {
-                            const flights = processFlightData(jsonData.states);
-                            lastSuccessfulData = flights;
-                            lastFetchTime = now;
-                            
-                            console.log(`✅ Successfully fetched ${flights.length} flights with Basic Authentication`);
-                            res.json({
-                                success: true,
-                                flights: flights,
-                                count: flights.length,
-                                timestamp: new Date().toISOString(),
-                                source: 'live_basic_auth',
-                                auth_method: 'basic'
-                            });
-                            return;
-                        }
+                if (retryResponse.statusCode === 200) {
+                    const jsonData = JSON.parse(retryResponse.data);
+                    if (jsonData && jsonData.states) {
+                        const flights = processFlightData(jsonData.states);
+                        lastSuccessfulData = flights;
+                        lastFetchTime = now;
+                        
+                        console.log(`✅ Successfully fetched ${flights.length} flights after token refresh`);
+                        res.json({
+                            success: true,
+                            flights: flights,
+                            count: flights.length,
+                            timestamp: new Date().toISOString(),
+                            source: 'live_oauth2_retry',
+                            auth_method: authMethod
+                        });
+                        return;
                     }
-                } catch (retryError) {
-                    console.log('❌ Retry with Basic Auth also failed');
                 }
+            } catch (retryError) {
+                console.log('❌ Token refresh failed:', retryError.message);
             }
             
-            const fallbackData = lastSuccessfulData || generateMockFlights();
-            res.json({
-                success: true,
-                flights: fallbackData,
-                count: fallbackData.length,
-                timestamp: new Date().toISOString(),
-                source: lastSuccessfulData ? 'cached' : 'mock',
-                warning: 'Authentication failed with both methods, using fallback data',
-                auth_method: authMethod
+            res.status(401).json({
+                success: false,
+                error: 'Authentication failed',
+                message: 'Unable to authenticate with OpenSky Network'
             });
             return;
         }
 
         if (response.statusCode !== 200) {
-            console.log(`⚠️  API returned status ${response.statusCode}, using fallback data`);
-            console.log(`⚠️  API response: ${response.data.substring(0, 200)}...`);
-            const fallbackData = lastSuccessfulData || generateMockFlights();
-            res.json({
-                success: true,
-                flights: fallbackData,
-                count: fallbackData.length,
-                timestamp: new Date().toISOString(),
-                source: lastSuccessfulData ? 'cached' : 'mock',
-                auth_method: authMethod,
-                apiStatus: response.statusCode,
-                message: "Using fallback data because OpenSky API is temporarily unavailable"
+            console.log(`⚠️  API returned status ${response.statusCode}`);
+            res.status(response.statusCode).json({
+                success: false,
+                error: `OpenSky API returned status ${response.statusCode}`,
+                message: 'OpenSky Network service is temporarily unavailable'
             });
             return;
         }
@@ -768,13 +752,13 @@ app.get('/api/flights', async (req, res) => {
             lastSuccessfulData = flights;
             lastFetchTime = now;
 
-            console.log(`✅ Successfully fetched ${flights.length} flights with ${authMethod} authentication`);
+            console.log(`✅ Successfully fetched ${flights.length} LIVE flights via OAuth2`);
             res.json({
                 success: true,
                 flights: flights,
                 count: flights.length,
                 timestamp: new Date().toISOString(),
-                source: authMethod === 'oauth2' ? 'live_oauth2' : 'live_basic_auth',
+                source: 'live_oauth2',
                 auth_method: authMethod
             });
         } else {
@@ -784,17 +768,26 @@ app.get('/api/flights', async (req, res) => {
     } catch (error) {
         console.error('❌ Server error:', error.message);
         
-        // Return cached or mock data as fallback
-        const fallbackData = lastSuccessfulData || generateMockFlights();
-        res.json({
-            success: true,
-            flights: fallbackData,
-            count: fallbackData.length,
-            timestamp: new Date().toISOString(),
-            source: lastSuccessfulData ? 'cached' : 'mock',
-            error: error.message,
-            auth_method: authMethod
-        });
+        // Return cached data if available, otherwise return error
+        if (lastSuccessfulData) {
+            res.json({
+                success: true,
+                flights: lastSuccessfulData,
+                count: lastSuccessfulData.length,
+                timestamp: new Date().toISOString(),
+                source: 'cached_live_data',
+                message: 'Using cached live data due to temporary error',
+                error: error.message,
+                auth_method: authMethod
+            });
+        } else {
+            res.status(500).json({
+                success: false,
+                error: 'Failed to fetch flight data',
+                message: 'OpenSky Network service is currently unavailable',
+                details: error.message
+            });
+        }
     }
 });
 
@@ -872,39 +865,6 @@ app.get('/api/flights/bounds', async (req, res) => {
     }
 });
 
-// Generate mock flight data as fallback
-function generateMockFlights() {
-    const mockFlights = [];
-    const airlines = ['UAL', 'DAL', 'AAL', 'SWA', 'BAW', 'AFR', 'DLH', 'KLM', 'ANA', 'JAL'];
-    
-    for (let i = 0; i < 100; i++) {
-        const airline = airlines[Math.floor(Math.random() * airlines.length)];
-        const flightNumber = Math.floor(Math.random() * 9000) + 1000;
-        
-        mockFlights.push({
-            id: `mock_${i}`,
-            icao24: `${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
-            callsign: `${airline}${flightNumber}`,
-            country: ['USA', 'UK', 'Germany', 'France', 'Japan', 'Netherlands', 'Canada'][Math.floor(Math.random() * 7)],
-            longitude: (Math.random() - 0.5) * 360,
-            latitude: (Math.random() - 0.5) * 150, // Limit latitude to avoid polar regions
-            altitude: Math.random() * 12000 + 3000,
-            velocity: Math.random() * 400 + 200,
-            heading: Math.random() * 360,
-            verticalRate: (Math.random() - 0.5) * 20,
-            lastContact: Date.now() / 1000,
-            onGround: false,
-            timePosition: Date.now() / 1000 - Math.floor(Math.random() * 60),
-            geoAltitude: null,
-            squawk: null,
-            spi: false,
-            positionSource: 0
-        });
-    }
-    
-    return mockFlights;
-}
-
 // ==================== Domain API Endpoints ====================
 
 // Get domain metadata
@@ -973,21 +933,8 @@ app.get('/api/health', (req, res) => {
         auth_method: authMethod,
         opensky_client_id: OPENSKY_CLIENT_ID,
         opensky_username: OPENSKY_USERNAME,
-        token_status: accessToken ? 'valid' : 'not_obtained'
-    });
-});
-
-// Mock flights endpoint for testing
-app.get('/api/flights/mock', (req, res) => {
-    console.log('🎭 Generating mock flight data for testing...');
-    const mockFlights = generateMockFlights();
-    res.json({
-        success: true,
-        flights: mockFlights,
-        count: mockFlights.length,
-        timestamp: new Date().toISOString(),
-        source: 'mock',
-        auth_method: 'none'
+        token_status: accessToken ? 'valid' : 'not_obtained',
+        data_source: 'live_only'
     });
 });
 
@@ -995,24 +942,24 @@ app.get('/api/flights/mock', (req, res) => {
 app.get('/api/info', (req, res) => {
     res.json({
         name: 'Earth Observation Flight Tracker API',
-        version: '4.0.0',
-        description: 'Real-time flight tracking using OpenSky Network API with hybrid authentication',
+        version: '5.0.0',
+        description: 'Real-time flight tracking using OpenSky Network API with OAuth2 authentication - LIVE DATA ONLY',
         endpoints: {
-            '/api/flights': 'Get all current flights',
-            '/api/flights/mock': 'Get mock flight data for testing',
-            '/api/flights/bounds': 'Get flights within bounding box (requires lamin, lomin, lamax, lomax query params)',
+            '/api/flights': 'Get all current LIVE flights',
+            '/api/flights/bounds': 'Get LIVE flights within bounding box (requires lamin, lomin, lamax, lomax query params)',
             '/api/health': 'Health check',
             '/api/info': 'API information'
         },
         features: [
-            'Hybrid authentication (OAuth2 + Basic Auth fallback)',
-            'Real-time flight data',
+            'OAuth2 authentication only',
+            'Real-time live flight data',
             'Bounding box filtering',
             'Rate limiting protection',
-            'Automatic authentication method switching',
-            'Fallback to cached/mock data'
+            'NO MOCK DATA - Live data only',
+            'Cached live data for rate limiting'
         ],
-        current_auth_method: authMethod
+        current_auth_method: authMethod,
+        data_policy: 'LIVE_DATA_ONLY'
     });
 });
 
