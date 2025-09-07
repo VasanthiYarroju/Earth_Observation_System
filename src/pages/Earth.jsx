@@ -1221,7 +1221,7 @@ function HeroSection({ onGetStarted }) {
           style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
         >
           <img
-            src="/images/logo.png"
+            src="/AWSC_LOGO.png"
             alt="Company Logo"
             style={{ height: '50px', width: 'auto' }}
           />
@@ -1860,7 +1860,6 @@ export default function EarthA() {
         <DomainsSection />
         <FeaturesSection />
         <MoreDataSection />
-        <CompanySection />
         <TeamSection />
         <ContactSection />
       </div>
