@@ -526,7 +526,8 @@ async function getAccessToken() {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Content-Length': Buffer.byteLength(postData),
                 'User-Agent': 'Earth Observation System/1.0'
-            }
+            },
+            timeout: 20000 // 20 second timeout
         };
 
         const req = https.request(options, (res) => {
@@ -547,28 +548,32 @@ async function getAccessToken() {
                         tokenExpiry = Date.now() + (expiresIn * 1000) - 60000; // Subtract 1 minute for safety
                         
                         console.log('✅ OAuth2 token obtained successfully');
-                        authMethod = 'oauth2';
                         resolve(accessToken);
                     } else {
                         console.error('❌ OAuth2 token request failed:', res.statusCode, data);
-                        console.log('🔄 Falling back to Basic Authentication...');
-                        authMethod = 'basic';
                         reject(new Error(`OAuth2 failed: ${res.statusCode} ${data}`));
                     }
                 } catch (error) {
                     console.error('❌ Error parsing OAuth2 token response:', error);
-                    console.log('🔄 Falling back to Basic Authentication...');
-                    authMethod = 'basic';
                     reject(error);
                 }
             });
         });
 
         req.on('error', (error) => {
-            console.error('❌ OAuth2 token request error:', error);
-            console.log('🔄 Falling back to Basic Authentication...');
-            authMethod = 'basic';
+            console.error('❌ OAuth2 token request error:', error.message);
             reject(error);
+        });
+
+        req.on('timeout', () => {
+            req.destroy();
+            console.error('❌ OAuth2 token request timeout');
+            reject(new Error('OAuth2 request timeout'));
+        });
+
+        req.setTimeout(20000, () => {
+            req.destroy();
+            reject(new Error('OAuth2 request timeout after 20 seconds'));
         });
 
         req.write(postData);
@@ -648,125 +653,167 @@ async function makeAuthenticatedRequest(url) {
     });
 }
 
-// Flight data endpoint - LIVE DATA ONLY
+// Flight data endpoint - LIVE DATA ONLY (NO MOCK DATA)
 app.get('/api/flights', async (req, res) => {
     try {
         const now = Date.now();
         
-        // Check if we should use cached data to avoid excessive API calls
+        // Check if we should use cached LIVE data to avoid excessive API calls
         if (lastSuccessfulData && (now - lastFetchTime) < MIN_FETCH_INTERVAL) {
-            console.log('📦 Returning cached flight data (rate limit protection)');
+            console.log('📦 Returning cached LIVE flight data (rate limit protection)');
             res.json({
                 success: true,
                 flights: lastSuccessfulData,
                 count: lastSuccessfulData.length,
                 timestamp: new Date().toISOString(),
                 source: 'cached_live_data',
-                auth_method: authMethod
+                auth_method: 'oauth2',
+                message: 'Cached live data from OpenSky Network'
             });
             return;
         }
 
         console.log('🛫 Fetching LIVE flight data from OpenSky Network via OAuth2...');
         
-        const response = await makeAuthenticatedRequest(OPENSKY_API_URL);
-        
-        if (response.statusCode === 429) {
-            console.log('⚠️  Rate limited by OpenSky API');
+        try {
+            const response = await makeAuthenticatedRequest(OPENSKY_API_URL);
+            
+            if (response.statusCode === 200) {
+                const jsonData = JSON.parse(response.data);
+                
+                if (jsonData && jsonData.states && jsonData.states.length > 0) {
+                    const flights = processFlightData(jsonData.states);
+                    
+                    // Cache successful response
+                    lastSuccessfulData = flights;
+                    lastFetchTime = now;
+
+                    console.log(`✅ Successfully fetched ${flights.length} LIVE flights via OAuth2`);
+                    res.json({
+                        success: true,
+                        flights: flights,
+                        count: flights.length,
+                        timestamp: new Date().toISOString(),
+                        source: 'live_oauth2',
+                        auth_method: 'oauth2'
+                    });
+                    return;
+                } else {
+                    console.log('⚠️ OpenSky API returned empty data');
+                    if (lastSuccessfulData) {
+                        res.json({
+                            success: true,
+                            flights: lastSuccessfulData,
+                            count: lastSuccessfulData.length,
+                            timestamp: new Date().toISOString(),
+                            source: 'cached_live_data',
+                            auth_method: 'oauth2',
+                            message: 'OpenSky returned empty data, using cached live data'
+                        });
+                    } else {
+                        res.status(503).json({
+                            success: false,
+                            error: 'No flight data available',
+                            message: 'OpenSky API returned empty data and no cache available'
+                        });
+                    }
+                    return;
+                }
+            } else if (response.statusCode === 429) {
+                console.log('⚠️ Rate limited by OpenSky API');
+                if (lastSuccessfulData) {
+                    res.json({
+                        success: true,
+                        flights: lastSuccessfulData,
+                        count: lastSuccessfulData.length,
+                        timestamp: new Date().toISOString(),
+                        source: 'cached_live_data',
+                        auth_method: 'oauth2',
+                        message: 'Rate limited - returning cached live data'
+                    });
+                } else {
+                    res.status(429).json({
+                        success: false,
+                        error: 'Rate limited and no cached data available',
+                        message: 'Please try again in a few moments'
+                    });
+                }
+                return;
+            } else if (response.statusCode === 401 || response.statusCode === 403) {
+                console.log(`🔐 Authentication failed (${response.statusCode}) - trying token refresh`);
+                
+                // Try to refresh OAuth2 token
+                try {
+                    accessToken = null;
+                    tokenExpiry = null;
+                    const retryResponse = await makeAuthenticatedRequest(OPENSKY_API_URL);
+                    
+                    if (retryResponse.statusCode === 200) {
+                        const jsonData = JSON.parse(retryResponse.data);
+                        if (jsonData && jsonData.states) {
+                            const flights = processFlightData(jsonData.states);
+                            lastSuccessfulData = flights;
+                            lastFetchTime = now;
+                            
+                            console.log(`✅ Successfully fetched ${flights.length} flights after token refresh`);
+                            res.json({
+                                success: true,
+                                flights: flights,
+                                count: flights.length,
+                                timestamp: new Date().toISOString(),
+                                source: 'live_oauth2_retry',
+                                auth_method: 'oauth2'
+                            });
+                            return;
+                        }
+                    }
+                } catch (retryError) {
+                    console.log('❌ Token refresh failed:', retryError.message);
+                }
+                
+                res.status(401).json({
+                    success: false,
+                    error: 'Authentication failed',
+                    message: 'Unable to authenticate with OpenSky Network - check credentials'
+                });
+                return;
+            } else {
+                console.log(`⚠️ OpenSky API returned status ${response.statusCode}`);
+                res.status(response.statusCode).json({
+                    success: false,
+                    error: `OpenSky API returned status ${response.statusCode}`,
+                    message: 'OpenSky Network service is temporarily unavailable'
+                });
+                return;
+            }
+        } catch (networkError) {
+            console.error('❌ Network error fetching flight data:', networkError.message);
+            
+            // If we have cached data, return it during network issues
             if (lastSuccessfulData) {
+                console.log('📦 Network error - returning cached live data');
                 res.json({
                     success: true,
                     flights: lastSuccessfulData,
                     count: lastSuccessfulData.length,
                     timestamp: new Date().toISOString(),
                     source: 'cached_live_data',
-                    auth_method: authMethod,
-                    message: 'Rate limited - returning cached live data'
+                    auth_method: 'oauth2',
+                    message: 'Network error - using cached live data',
+                    network_error: networkError.message
                 });
             } else {
-                res.status(429).json({
+                res.status(503).json({
                     success: false,
-                    error: 'Rate limited and no cached data available',
-                    message: 'Please try again in a few moments'
+                    error: 'Service temporarily unavailable',
+                    message: 'Unable to connect to OpenSky Network and no cached data available',
+                    details: networkError.message
                 });
             }
-            return;
-        }
-
-        if (response.statusCode === 401 || response.statusCode === 403) {
-            console.log(`🔐 Authentication failed (${response.statusCode})`);
-            
-            // Try to refresh OAuth2 token
-            try {
-                accessToken = null;
-                tokenExpiry = null;
-                const retryResponse = await makeAuthenticatedRequest(OPENSKY_API_URL);
-                
-                if (retryResponse.statusCode === 200) {
-                    const jsonData = JSON.parse(retryResponse.data);
-                    if (jsonData && jsonData.states) {
-                        const flights = processFlightData(jsonData.states);
-                        lastSuccessfulData = flights;
-                        lastFetchTime = now;
-                        
-                        console.log(`✅ Successfully fetched ${flights.length} flights after token refresh`);
-                        res.json({
-                            success: true,
-                            flights: flights,
-                            count: flights.length,
-                            timestamp: new Date().toISOString(),
-                            source: 'live_oauth2_retry',
-                            auth_method: authMethod
-                        });
-                        return;
-                    }
-                }
-            } catch (retryError) {
-                console.log('❌ Token refresh failed:', retryError.message);
-            }
-            
-            res.status(401).json({
-                success: false,
-                error: 'Authentication failed',
-                message: 'Unable to authenticate with OpenSky Network'
-            });
-            return;
-        }
-
-        if (response.statusCode !== 200) {
-            console.log(`⚠️  API returned status ${response.statusCode}`);
-            res.status(response.statusCode).json({
-                success: false,
-                error: `OpenSky API returned status ${response.statusCode}`,
-                message: 'OpenSky Network service is temporarily unavailable'
-            });
-            return;
-        }
-
-        const jsonData = JSON.parse(response.data);
-        
-        if (jsonData && jsonData.states) {
-            const flights = processFlightData(jsonData.states);
-
-            // Cache successful response
-            lastSuccessfulData = flights;
-            lastFetchTime = now;
-
-            console.log(`✅ Successfully fetched ${flights.length} LIVE flights via OAuth2`);
-            res.json({
-                success: true,
-                flights: flights,
-                count: flights.length,
-                timestamp: new Date().toISOString(),
-                source: 'live_oauth2',
-                auth_method: authMethod
-            });
-        } else {
-            throw new Error('Invalid data format from OpenSky API');
         }
 
     } catch (error) {
-        console.error('❌ Server error:', error.message);
+        console.error('❌ Unexpected server error:', error.message);
         
         // Return cached data if available, otherwise return error
         if (lastSuccessfulData) {
@@ -776,15 +823,15 @@ app.get('/api/flights', async (req, res) => {
                 count: lastSuccessfulData.length,
                 timestamp: new Date().toISOString(),
                 source: 'cached_live_data',
-                message: 'Using cached live data due to temporary error',
+                message: 'Server error - using cached live data',
                 error: error.message,
-                auth_method: authMethod
+                auth_method: 'oauth2'
             });
         } else {
             res.status(500).json({
                 success: false,
-                error: 'Failed to fetch flight data',
-                message: 'OpenSky Network service is currently unavailable',
+                error: 'Internal server error',
+                message: 'Failed to fetch flight data and no cache available',
                 details: error.message
             });
         }
@@ -930,12 +977,46 @@ app.get('/api/health', (req, res) => {
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         authenticated: true,
-        auth_method: authMethod,
+        auth_method: 'oauth2',
         opensky_client_id: OPENSKY_CLIENT_ID,
         opensky_username: OPENSKY_USERNAME,
         token_status: accessToken ? 'valid' : 'not_obtained',
-        data_source: 'live_only'
+        data_source: 'live_only',
+        policy: 'NO_MOCK_DATA',
+        cached_data_available: lastSuccessfulData ? true : false,
+        last_successful_fetch: lastFetchTime ? new Date(lastFetchTime).toISOString() : 'never'
     });
+});
+
+// Test OAuth2 connectivity endpoint
+app.get('/api/test-oauth2', async (req, res) => {
+    try {
+        console.log('🧪 Testing OAuth2 connectivity...');
+        const token = await getAccessToken();
+        
+        res.json({
+            success: true,
+            message: 'OAuth2 authentication successful',
+            token_obtained: true,
+            token_length: token ? token.length : 0,
+            token_expiry: tokenExpiry ? new Date(tokenExpiry).toISOString() : null,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('❌ OAuth2 test failed:', error.message);
+        res.status(500).json({
+            success: false,
+            error: 'OAuth2 authentication failed',
+            message: error.message,
+            timestamp: new Date().toISOString(),
+            troubleshooting: [
+                'Check network connectivity to auth.opensky-network.org',
+                'Verify OAuth2 credentials are correct',
+                'Ensure firewall allows HTTPS connections',
+                'Try again as this might be a temporary network issue'
+            ]
+        });
+    }
 });
 
 // API info endpoint
@@ -967,9 +1048,11 @@ app.get('/api/info', (req, res) => {
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🛫 Earth Observation Server running on port ${PORT}`);
-    console.log(`🌍 Flight data available at http://localhost:${PORT}/api/flights`);
+    console.log(`🌍 LIVE flight data only at http://localhost:${PORT}/api/flights`);
     console.log(`📊 Health check at http://localhost:${PORT}/api/health`);
-    console.log(`🔐 Using hybrid authentication (OAuth2 + Basic Auth fallback)`);
+    console.log(`🧪 OAuth2 test at http://localhost:${PORT}/api/test-oauth2`);
+    console.log(`🔐 Using OAuth2 authentication ONLY`);
+    console.log(`🚫 NO MOCK DATA - Live data only policy`);
     console.log(`🆔 Client ID: ${OPENSKY_CLIENT_ID}`);
     console.log(`👤 Username: ${OPENSKY_USERNAME}`);
 })
