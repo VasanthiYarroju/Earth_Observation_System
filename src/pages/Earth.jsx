@@ -1372,9 +1372,77 @@ function HeroSection({ onGetStarted }) {
 
 
 function TeamSection() {
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
+
+  const teamMembers = [
+    {
+      name: "Jose Isaac Christy B",
+      role: "Founder & CEO",
+      title: "Mechanical & Aeronautical Engineer | Astropreneur",
+      icon: "🚀",
+      description: "Jose is the visionary behind Away Space Covenant (AwSc) and the driving force of AeroVision. With advanced studies in Aeronautical Engineering and Space Entrepreneurship, plus hands-on projects in Earth Observation, satellites, and propulsion design, he combines engineering mastery with entrepreneurial leadership.",
+      specialties: ["Aeronautical Engineering", "Space Systems", "Mission Planning", "Strategic Leadership"],
+      philosophy: "Honoring Excellence, Inspiring a New Era of Greatness",
+      gradient: "linear-gradient(135deg, rgba(79, 195, 247, 0.2) 0%, rgba(37, 91, 145, 0.2) 100%)"
+    },
+    {
+      name: "Esther Maina",
+      role: "Geospatial Technology Lead",
+      title: "Geospatial Developer | Remote Sensing Expert | Space Advocate",
+      icon: "🌐",
+      description: "Esther is a Geospatial Engineer at the Kenya Space Agency, where she leads national projects in agriculture, disaster risk reduction, and environmental monitoring using Earth Observation. An IAF Launchpad and Space4Women mentee, she is passionate about empowering communities through data.",
+      specialties: ["Remote Sensing", "GIS Systems", "Environmental Monitoring", "Data Analytics"],
+      philosophy: "Empowering communities through geospatial intelligence",
+      gradient: "linear-gradient(135deg, rgba(147, 197, 114, 0.2) 0%, rgba(37, 91, 145, 0.2) 100%)"
+    },
+    {
+      name: "Muhammad Faraz",
+      role: "Strategic Operations Director",
+      title: "Management Engineer | Strategist | Space Entrepreneur",
+      icon: "🌌",
+      description: "Faraz blends engineering, management, and entrepreneurial insight. Currently at Marposs and pursuing studies in Management Engineering and Space Entrepreneurship, he has held global leadership roles at Junior Enterprises and is recognized as an Aspire Leaders Finalist and Aurora Fellow.",
+      specialties: ["Strategic Planning", "Operations Management", "Business Development", "Team Leadership"],
+      philosophy: "Excellence at the intersection of technology and strategy",
+      gradient: "linear-gradient(135deg, rgba(255, 159, 67, 0.2) 0%, rgba(37, 91, 145, 0.2) 100%)"
+    }
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+        when: "beforeChildren"
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { 
+      y: 100, 
+      opacity: 0,
+      scale: 0.8
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+        duration: 0.8
+      }
+    }
+  };
+
   return (
     <section id="team" style={{
-      padding: '80px 8%',
+      padding: '120px 8%',
       color: 'white',
       minHeight: '100vh',
       display: 'flex',
@@ -1384,7 +1452,21 @@ function TeamSection() {
       overflow: 'hidden',
       background: 'radial-gradient(circle at center, rgba(37, 91, 145, 0.2) 0%, rgba(2, 12, 27, 1) 70%)'
     }}>
-      {/* Stars Effect */}
+      {/* Enhanced Background Effects */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `
+          radial-gradient(circle at 20% 50%, rgba(79, 195, 247, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(147, 197, 114, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 80%, rgba(255, 159, 67, 0.1) 0%, transparent 50%)
+        `,
+        zIndex: -3
+      }}></div>
+
       <div style={{
         position: 'absolute',
         top: 0,
@@ -1395,276 +1477,387 @@ function TeamSection() {
           radial-gradient(white 1px, transparent 1px),
           radial-gradient(white 1px, transparent 1px)
         `,
-        backgroundSize: '50px 50px',
-        backgroundPosition: '0 0, 25px 25px',
-        opacity: 0.1,
+        backgroundSize: '60px 60px',
+        backgroundPosition: '0 0, 30px 30px',
+        opacity: 0.05,
         zIndex: -2
       }}></div>
 
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        width: '100%',
-        position: 'relative',
-        zIndex: 1
-      }}>
-        {/* Project Title Section */}
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '60px'
-        }}>
-          
-          {/* ETR Picture */}
-          <div style={{
-            margin: '40px auto',
-            maxWidth: '600px',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            boxShadow: '0 15px 30px rgba(0, 0, 0, 0.5)',
-            border: '2px solid rgba(79, 195, 247, 0.3)'
-          }}>
+      <motion.div
+        ref={ref}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        variants={containerVariants}
+        style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          width: '100%',
+          position: 'relative',
+          zIndex: 1
+        }}
+      >
+        {/* Enhanced Header Section */}
+        <motion.div
+          variants={cardVariants}
+          style={{
+            textAlign: 'center',
+            marginBottom: '80px'
+          }}
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={inView ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            style={{
+              margin: '40px auto 60px',
+              maxWidth: '700px',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
+              border: '3px solid rgba(79, 195, 247, 0.4)',
+              position: 'relative'
+            }}
+          >
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(45deg, rgba(79, 195, 247, 0.1), rgba(147, 197, 114, 0.1))',
+              zIndex: 1
+            }}></div>
             <img
               src="/images/etr_pic.jpg"
               alt="Project ETRx - AeroVision"
               style={{
                 width: '100%',
                 height: 'auto',
-                display: 'block'
+                display: 'block',
+                position: 'relative',
+                zIndex: 2
               }}
             />
-          </div>
-        </div>
+            <div style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+              color: 'white',
+              padding: '20px',
+              fontSize: '1.1rem',
+              fontWeight: 'bold',
+              textAlign: 'center',
+              zIndex: 3
+            }}>
+              Project ETRx - AeroVision Mission Platform
+            </div>
+          </motion.div>
 
-        {/* Who We Are Section */}
-        <div style={{
-          marginBottom: '60px',
-          textAlign: 'center'
-        }}>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: 'bold',
-            marginBottom: '30px',
-            color: '#4fc3f7'
-          }}>
-            🌍 Who We Are
-          </h2>
+          <motion.h2
+            variants={cardVariants}
+            style={{
+              fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+              fontWeight: '800',
+              marginBottom: '30px',
+              background: 'linear-gradient(135deg, #4fc3f7 0%, #93c572 50%, #ff9f43 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textAlign: 'center',
+              letterSpacing: '2px'
+            }}
+          >
+            🌍 Meet Our Visionary Team
+          </motion.h2>
           
-          <p style={{
-            fontSize: '1.2rem',
-            lineHeight: '1.8',
-            color: 'rgba(255, 255, 255, 0.9)',
-            maxWidth: '900px',
-            margin: '0 auto',
-            marginBottom: '40px'
-          }}>
-            At ETRx – EO: AeroVision Project, we are a global team of dreamers and doers united by a single vision: 
-            to harness Earth Observation and space innovation for a sustainable and inspiring future.
-          </p>
-        </div>
+          <motion.p
+            variants={cardVariants}
+            style={{
+              fontSize: '1.3rem',
+              lineHeight: '1.8',
+              color: 'rgba(255, 255, 255, 0.9)',
+              maxWidth: '1000px',
+              margin: '0 auto',
+              fontWeight: '300'
+            }}
+          >
+            At ETRx – EO: AeroVision Project, we are a global consortium of dreamers, engineers, and innovators 
+            united by an unwavering commitment to harness Earth Observation and space technology for a 
+            sustainable and inspiring future.
+          </motion.p>
+        </motion.div>
 
-        {/* Team Members */}
-        <div style={{
-          marginBottom: '60px'
-        }}>
-          <h3 style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            marginBottom: '40px',
-            color: 'white',
-            textAlign: 'center'
-          }}>
-            Our Team
-          </h3>
+        {/* Enhanced Team Members Grid */}
+        <motion.div
+          variants={containerVariants}
+          style={{
+            marginBottom: '80px'
+          }}
+        >
+          <motion.h3
+            variants={cardVariants}
+            style={{
+              fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+              fontWeight: 'bold',
+              marginBottom: '60px',
+              color: 'white',
+              textAlign: 'center',
+              position: 'relative'
+            }}
+          >
+            Our Leadership Excellence
+            <div style={{
+              width: '100px',
+              height: '4px',
+              background: 'linear-gradient(90deg, #4fc3f7, #93c572)',
+              margin: '20px auto',
+              borderRadius: '2px'
+            }}></div>
+          </motion.h3>
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-            gap: '30px'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+            gap: '40px',
+            alignItems: 'stretch'
           }}>
-            {/* Jose Isaac Christy B */}
-            <div style={{
-              background: 'rgba(37, 91, 145, 0.15)',
-              borderRadius: '12px',
-              padding: '30px',
-              borderLeft: '4px solid #4fc3f7',
-              backdropFilter: 'blur(10px)'
-            }}>
-              <div style={{
-                fontSize: '2rem',
-                marginBottom: '20px'
-              }}>
-                🚀
-              </div>
-              <h4 style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                marginBottom: '10px',
-                color: '#4fc3f7'
-              }}>
-                Jose Isaac Christy B
-              </h4>
-              <p style={{
-                fontSize: '1rem',
-                color: 'rgba(255, 255, 255, 0.8)',
-                marginBottom: '15px',
-                fontWeight: 'bold'
-              }}>
-                Founder | Mechanical & Aeronautical Engineer | Astropreneur
-              </p>
-              <p style={{
-                fontSize: '0.95rem',
-                lineHeight: '1.6',
-                color: 'rgba(255, 255, 255, 0.8)'
-              }}>
-                Jose is the visionary behind Away Space Covenant (AwSc) and the driving force of AeroVision. 
-                With advanced studies in Aeronautical Engineering and Space Entrepreneurship, plus hands-on projects 
-                in Earth Observation, satellites, and propulsion design, he combines engineering mastery with entrepreneurial 
-                leadership. A polymath at heart—engineer, artist, writer, and martial artist—he believes in 
-                "Honoring Excellence, Inspiring a New Era of Greatness."
-              </p>
-            </div>
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={index}
+                variants={cardVariants}
+                whileHover={{
+                  y: -10,
+                  scale: 1.02,
+                  transition: { duration: 0.3 }
+                }}
+                style={{
+                  background: member.gradient,
+                  borderRadius: '20px',
+                  padding: '40px',
+                  backdropFilter: 'blur(15px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  cursor: 'pointer'
+                }}
+              >
+                {/* Subtle gradient overlay */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%)',
+                  pointerEvents: 'none'
+                }}></div>
 
-            {/* Esther Maina */}
-            <div style={{
-              background: 'rgba(37, 91, 145, 0.15)',
-              borderRadius: '12px',
-              padding: '30px',
-              borderLeft: '4px solid #4fc3f7',
-              backdropFilter: 'blur(10px)'
-            }}>
-              <div style={{
-                fontSize: '2rem',
-                marginBottom: '20px'
-              }}>
-                🌐
-              </div>
-              <h4 style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                marginBottom: '10px',
-                color: '#4fc3f7'
-              }}>
-                Esther Maina
-              </h4>
-              <p style={{
-                fontSize: '1rem',
-                color: 'rgba(255, 255, 255, 0.8)',
-                marginBottom: '15px',
-                fontWeight: 'bold'
-              }}>
-                Geospatial Developer | Remote Sensing Expert | Space Advocate
-              </p>
-              <p style={{
-                fontSize: '0.95rem',
-                lineHeight: '1.6',
-                color: 'rgba(255, 255, 255, 0.8)'
-              }}>
-                Esther is a Geospatial Engineer at the Kenya Space Agency, where she leads national projects in agriculture, 
-                disaster risk reduction, and environmental monitoring using Earth Observation. An IAF Launchpad and 
-                Space4Women mentee, she is passionate about empowering communities through data and inspiring the 
-                next generation of space leaders across Africa.
-              </p>
-            </div>
+                <div style={{
+                  position: 'relative',
+                  zIndex: 1
+                }}>
+                  <div style={{
+                    fontSize: '3.5rem',
+                    marginBottom: '25px',
+                    textAlign: 'center',
+                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
+                  }}>
+                    {member.icon}
+                  </div>
 
-            {/* Muhammad Faraz */}
-            <div style={{
-              background: 'rgba(37, 91, 145, 0.15)',
-              borderRadius: '12px',
-              padding: '30px',
-              borderLeft: '4px solid #4fc3f7',
-              backdropFilter: 'blur(10px)'
-            }}>
-              <div style={{
-                fontSize: '2rem',
-                marginBottom: '20px'
-              }}>
-                🌌
-              </div>
-              <h4 style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                marginBottom: '10px',
-                color: '#4fc3f7'
-              }}>
-                Muhammad Faraz
-              </h4>
-              <p style={{
-                fontSize: '1rem',
-                color: 'rgba(255, 255, 255, 0.8)',
-                marginBottom: '15px',
-                fontWeight: 'bold'
-              }}>
-                Management Engineer | Strategist | Space Entrepreneur in the Making
-              </p>
-              <p style={{
-                fontSize: '0.95rem',
-                lineHeight: '1.6',
-                color: 'rgba(255, 255, 255, 0.8)'
-              }}>
-                Faraz blends engineering, management, and entrepreneurial insight. Currently at Marposs and pursuing 
-                studies in Management Engineering and Space Entrepreneurship, he has held global leadership roles at 
-                Junior Enterprises and is recognized as an Aspire Leaders Finalist and Aurora Fellow. He thrives at 
-                the intersection of technology, strategy, and collaboration.
-              </p>
-            </div>
+                  <div style={{
+                    textAlign: 'center',
+                    marginBottom: '25px'
+                  }}>
+                    <h4 style={{
+                      fontSize: '1.6rem',
+                      fontWeight: 'bold',
+                      marginBottom: '8px',
+                      color: '#4fc3f7'
+                    }}>
+                      {member.name}
+                    </h4>
+                    
+                    <div style={{
+                      fontSize: '1.1rem',
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      marginBottom: '5px',
+                      fontWeight: 'bold'
+                    }}>
+                      {member.role}
+                    </div>
+                    
+                    <div style={{
+                      fontSize: '0.95rem',
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      fontStyle: 'italic'
+                    }}>
+                      {member.title}
+                    </div>
+                  </div>
+
+                  <p style={{
+                    fontSize: '1rem',
+                    lineHeight: '1.7',
+                    color: 'rgba(255, 255, 255, 0.85)',
+                    marginBottom: '25px',
+                    textAlign: 'justify'
+                  }}>
+                    {member.description}
+                  </p>
+
+                  {/* Specialties */}
+                  <div style={{
+                    marginBottom: '25px'
+                  }}>
+                    <h5 style={{
+                      fontSize: '1rem',
+                      fontWeight: 'bold',
+                      color: '#4fc3f7',
+                      marginBottom: '15px'
+                    }}>
+                      Core Expertise:
+                    </h5>
+                    <div style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '8px'
+                    }}>
+                      {member.specialties.map((specialty, idx) => (
+                        <span
+                          key={idx}
+                          style={{
+                            padding: '6px 12px',
+                            background: 'rgba(79, 195, 247, 0.2)',
+                            borderRadius: '20px',
+                            fontSize: '0.85rem',
+                            color: 'white',
+                            border: '1px solid rgba(79, 195, 247, 0.3)'
+                          }}
+                        >
+                          {specialty}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Philosophy */}
+                  <div style={{
+                    padding: '20px',
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    borderRadius: '12px',
+                    borderLeft: '4px solid #4fc3f7',
+                    fontStyle: 'italic',
+                    fontSize: '0.95rem',
+                    color: 'rgba(255, 255, 255, 0.8)'
+                  }}>
+                    "{member.philosophy}"
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* Team Summary */}
-        <div style={{
-          textAlign: 'center',
-          background: 'rgba(79, 195, 247, 0.1)',
-          borderRadius: '12px',
-          padding: '40px',
-          border: '2px solid rgba(79, 195, 247, 0.3)',
-          marginBottom: '40px'
-        }}>
-          <h3 style={{
-            fontSize: '1.8rem',
-            fontWeight: 'bold',
-            marginBottom: '20px',
-            color: '#4fc3f7'
-          }}>
-            ✨ Together, we are ETRx – EO: AeroVision
-          </h3>
-          <p style={{
-            fontSize: '1.1rem',
-            lineHeight: '1.7',
-            color: 'rgba(255, 255, 255, 0.9)',
-            maxWidth: '800px',
-            margin: '0 auto'
-          }}>
-            Merging engineering, geospatial intelligence, and entrepreneurial spirit to design solutions that 
-            impact Earth today and inspire humanity's journey into space tomorrow.
-          </p>
-          
+        {/* Enhanced Team Summary */}
+        <motion.div
+          variants={cardVariants}
+          style={{
+            textAlign: 'center',
+            background: 'linear-gradient(135deg, rgba(79, 195, 247, 0.15) 0%, rgba(37, 91, 145, 0.15) 100%)',
+            borderRadius: '25px',
+            padding: '60px 40px',
+            border: '2px solid rgba(79, 195, 247, 0.3)',
+            boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
           <div style={{
-            marginTop: '30px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '30px'
-          }}>
-            <div style={{
-              textAlign: 'center'
+            position: 'absolute',
+            top: '-50%',
+            left: '-50%',
+            width: '200%',
+            height: '200%',
+            background: 'radial-gradient(circle, rgba(79, 195, 247, 0.1) 0%, transparent 70%)',
+            animation: 'pulse 4s ease-in-out infinite',
+            pointerEvents: 'none'
+          }}></div>
+
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h3 style={{
+              fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+              fontWeight: 'bold',
+              marginBottom: '30px',
+              background: 'linear-gradient(135deg, #4fc3f7 0%, #93c572 50%, #ff9f43 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
             }}>
-              <div style={{
-                fontSize: '2.5rem',
-                fontWeight: 'bold',
-                color: '#4fc3f7'
-              }}>
-                3
-              </div>
-              <div style={{
-                fontSize: '1rem',
-                color: 'rgba(255, 255, 255, 0.8)'
-              }}>
-                Team Members
-              </div>
+              ✨ Together, we are ETRx – EO: AeroVision
+            </h3>
+            
+            <p style={{
+              fontSize: '1.2rem',
+              lineHeight: '1.8',
+              color: 'rgba(255, 255, 255, 0.9)',
+              maxWidth: '900px',
+              margin: '0 auto 40px',
+              fontWeight: '300'
+            }}>
+              Merging cutting-edge engineering, advanced geospatial intelligence, and visionary entrepreneurial 
+              spirit to design revolutionary solutions that transform Earth observation today and inspire 
+              humanity's bold journey into the cosmic frontier tomorrow.
+            </p>
+            
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+              gap: '30px',
+              maxWidth: '600px',
+              margin: '0 auto'
+            }}>
+              {[
+                { value: '3', label: 'Visionary Leaders', icon: '👥' },
+                { value: '5+', label: 'Years Combined Experience', icon: '⭐' },
+                { value: '∞', label: 'Innovation Potential', icon: '🚀' }
+              ].map((stat, idx) => (
+                <div key={idx} style={{
+                  textAlign: 'center',
+                  padding: '20px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '15px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}>
+                  <div style={{
+                    fontSize: '2rem',
+                    marginBottom: '10px'
+                  }}>
+                    {stat.icon}
+                  </div>
+                  <div style={{
+                    fontSize: '2.5rem',
+                    fontWeight: 'bold',
+                    color: '#4fc3f7',
+                    marginBottom: '5px'
+                  }}>
+                    {stat.value}
+                  </div>
+                  <div style={{
+                    fontSize: '0.9rem',
+                    color: 'rgba(255, 255, 255, 0.8)'
+                  }}>
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
