@@ -1210,8 +1210,12 @@ const sidebarItems = React.useMemo(() => {
           <div style={styles.sidebarHeader}>
             {isSidebarOpen && (
               <div style={styles.logoContainer}>
-                <Plane color="#fff" size={32} />
-                <span style={styles.logoText}>AwSc-ETR</span>
+                <img 
+                  src="/AWSC_LOGO.png" 
+                  alt="ETRx-AeroVision Logo" 
+                  style={{ width: '32px', height: '32px', objectFit: 'contain' }}
+                />
+                <span style={styles.logoText}>ETRx-AeroVision</span>
               </div>
             )}
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} style={styles.toggleButton}>

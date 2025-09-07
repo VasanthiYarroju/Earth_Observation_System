@@ -1370,170 +1370,7 @@ function HeroSection({ onGetStarted }) {
   );
 }
 
-function CompanySection() {
-  return (
-    <section id="company" style={{
-      padding: '80px 8%',
-      color: 'white',
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      position: 'relative',
-      overflow: 'hidden',
-      background: 'radial-gradient(circle at center, rgba(7, 7, 7, 0.2) 0%, rgba(2, 12, 27, 1) 70%)'
-    }}>
-      {/* Stars Effect */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        
-        backgroundImage: `
-          radial-gradient(white 1px, transparent 1px),
-          radial-gradient(white 1px, transparent 1px)
-        `,
-        backgroundSize: '50px 50px',
-        backgroundPosition: '0 0, 25px 25px',
-        // Example: Remove these from DomainsSection
-background: 'radial-gradient(circle at center, rgba(7, 7, 7, 0.2) 0%, rgba(2, 12, 27, 1) 70%)',
-        opacity: 0.1,
-        zIndex: -2
-      }}></div>
 
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        width: '100%',
-        position: 'relative',
-        zIndex: 1
-      }}>
-        <h2 style={{
-          fontSize: '2.5rem',
-          fontWeight: 'bold',
-          marginBottom: '2rem',
-          color: '#4fc3f7',
-          textAlign: 'center'
-        }}>
-          About Our Company 🏢
-        </h2>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '3fr 2fr', // Changed ratio to give more space to content
-          gap: '40px',
-          alignItems: 'center'
-        }}>
-          {/* Content Column - Now larger */}
-          <div>
-            <h3 style={{
-              fontSize: '1.8rem',
-              fontWeight: 'bold',
-              marginBottom: '1.5rem',
-              color: 'white'
-            }}>
-              Who We Are
-            </h3>
-            <p style={{
-              fontSize: '1.1rem',
-              lineHeight: '1.7',
-              color: 'rgba(255, 255, 255, 0.8)',
-              marginBottom: '30px'
-            }}>
-Away Space Covenant (AwSc) is India's first space ecosystem, pioneering space tourism while laying its foundation with space food innovation, education, and outreach. Our vision expands into the world’s first Space Park, immersive astronaut experiences, and groundbreaking space medicine—all rooted in sustainability for generations to come. With India as our launchpad, we bridge Earth and the cosmos, inspiring greatness and redefining the future of humanity. 🚀            </p>
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '20px',
-              marginBottom: '30px'
-            }}>
-              {[
-                { title: "Founded", value: "2018" },
-                { title: "Team Members", value: "8" },
-                { title: "Active Projects", value: "12" },
-                { title: "Global Coverage", value: "100%" }
-              ].map((item, index) => (
-                <div key={index} style={{
-                  padding: '15px',
-                  background: 'rgba(6, 7, 7, 0.15)',
-                  borderRadius: '8px',
-                  borderLeft: '3px solid #4fc3f7'
-                }}>
-                  <div style={{
-                    fontSize: '0.9rem',
-                    color: '#4fc3f7',
-                    marginBottom: '5px'
-                  }}>{item.title}</div>
-                  <div style={{
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                    color: 'white'
-                  }}>{item.value}</div>
-                </div>
-              ))}
-            </div>
-            <h3 style={{
-              fontSize: '1.8rem',
-              fontWeight: 'bold',
-              marginBottom: '1.5rem',
-              color: 'white'
-            }}>
-              Our Mission
-            </h3>
-            <p style={{
-              fontSize: '1.1rem',
-              lineHeight: '1.7',
-              color: 'rgba(255, 255, 255, 0.8)',
-              marginBottom: '30px'
-            }}>
-"To revolutionize Earth monitoring by delivering unprecedented, real-time environmental intelligence through advanced aerial observation systems—empowering scientists, policymakers, and communities to protect ecosystems, mitigate climate risks, and steward planetary health with satellite-grade precision and aircraft agility."
-
-            </p>
-          </div>
-
-          {/* Image Column - Now smaller */}
-          <div style={{
-            position: 'relative',
-            height: '300px', // Reduced height
-            borderRadius: '12px',
-            overflow: 'hidden',
-            boxShadow: '0 15px 30px rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <img
-              src="/images/company.jpg"
-              alt="Our Team"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                opacity: 0.9
-              }}
-            />
-            <div style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              padding: '15px',
-              background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-              color: 'white',
-              fontSize: '0.8rem',
-              textAlign: 'center'
-            }}>
-              The ETRx Development Team
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 function TeamSection() {
   return (
     <section id="team" style={{
@@ -1576,15 +1413,6 @@ function TeamSection() {
           textAlign: 'center',
           marginBottom: '60px'
         }}>
-          <h1 style={{
-            fontSize: '3.5rem',
-            fontWeight: 'bold',
-            marginBottom: '20px',
-            color: '#4fc3f7',
-            textShadow: '0 0 20px rgba(79, 195, 247, 0.5)'
-          }}>
-            Project ETRx - AeroVision
-          </h1>
           
           {/* ETR Picture */}
           <div style={{
@@ -1982,7 +1810,7 @@ function ContactSection() {
             }}>
               Visit Us
             </h3>
-            <a href="https://awaywithus.squarespace.com/" target="_blank" rel="noopener noreferrer" style={{
+            <a href="https://awayspacecovenant.in/" target="_blank" rel="noopener noreferrer" style={{
               color: '#4fc3f7',
               textDecoration: 'none',
               transition: 'all 0.3s ease'
