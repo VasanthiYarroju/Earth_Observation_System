@@ -1,11 +1,11 @@
-// Before: const express = require('express');
+
 import express from 'express';
 import mongoose from 'mongoose';
-// Before: const cors = require('cors');
+
 import cors from 'cors';
-// Before: const https = require('https');
+
 import https from 'https';
-// Before: const querystring = require('querystring');
+
 import querystring from 'querystring';
 import dns from 'dns';
 import bcrypt from 'bcryptjs';
@@ -572,8 +572,7 @@ async function getAccessToken() {
             'client_secret': OPENSKY_CLIENT_SECRET
         });
 
-        // Reduced timeout for faster failure detection
-        const REQUEST_TIMEOUT = 10000; // 10 seconds
+        const REQUEST_TIMEOUT = 45000; // Increased to 45 seconds
 
         const options = {
             hostname: 'auth.opensky-network.org',
@@ -584,8 +583,12 @@ async function getAccessToken() {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Content-Length': Buffer.byteLength(postData),
                 'User-Agent': 'Earth Observation System/2.0',
-                'Connection': 'close' // Ensure connection is closed after request
-            }
+                'Connection': 'close',
+                'Accept': 'application/json'
+            },
+            // Add these for better connection handling
+            family: 4, // Force IPv4 to avoid IPv6 issues
+            agent: false // Disable connection pooling
         };
 
         const startTime = Date.now();
@@ -647,33 +650,18 @@ async function getAccessToken() {
             } else if (error.code === 'ETIMEDOUT') {
                 errorMessage = 'Connection timeout to auth.opensky-network.org';
             } else if (error.code === 'ECONNRESET') {
-                errorMessage = 'Connection reset by auth.opensky-network.org';
+                errorMessage = 'Connection reset by auth.opensky-network.org - retrying might help';
             }
             
             reject(new Error(`${errorMessage}: ${error.message}`));
         });
 
-        req.on('timeout', () => {
-            const responseTime = Date.now() - startTime;
-            console.error(`❌ OAuth2 token request timeout after ${responseTime}ms`);
-            req.destroy();
-            reject(new Error(`OAuth2 request timeout after ${REQUEST_TIMEOUT}ms`));
-        });
-
-        // Set timeout
+        // Set a reasonable timeout
         req.setTimeout(REQUEST_TIMEOUT, () => {
             const responseTime = Date.now() - startTime;
-            console.error(`❌ OAuth2 request timeout (setTimeout) after ${responseTime}ms`);
+            console.error(`❌ OAuth2 request timeout after ${responseTime}ms`);
             req.destroy();
             reject(new Error(`OAuth2 request timeout after ${REQUEST_TIMEOUT}ms`));
-        });
-
-        // Handle socket errors
-        req.on('socket', (socket) => {
-            socket.on('timeout', () => {
-                console.error('❌ OAuth2 socket timeout');
-                req.destroy();
-            });
         });
 
         req.write(postData);
@@ -684,7 +672,7 @@ async function getAccessToken() {
 // Function to make authenticated API request - OAuth2 ONLY
 async function makeAuthenticatedRequest(url) {
     return new Promise(async (resolve, reject) => {
-        const timeout = 15000; // Increased timeout for OAuth2
+        const timeout = 30000; // Increased timeout for OAuth2
         let requestTimeout;
         
         try {
@@ -693,17 +681,19 @@ async function makeAuthenticatedRequest(url) {
                     'User-Agent': 'Earth Observation System/1.0',
                     'Accept': 'application/json'
                 },
-                timeout: timeout
+                timeout: timeout,
+                family: 4, // Force IPv4
+                agent: false // Disable connection pooling
             };
 
             // Use OAuth2 authentication only (since it's working)
             try {
                 const token = await getAccessToken();
                 options.headers['Authorization'] = `Bearer ${token}`;
-                console.log('� Using OAuth2 Authentication...');
+                console.log('🔐 Using OAuth2 Authentication...');
             } catch (error) {
                 console.log('❌ OAuth2 failed:', error.message);
-                reject(new Error('OAuth2 authentication failed'));
+                reject(new Error('OAuth2 authentication failed: ' + error.message));
                 return;
             }
 
@@ -729,19 +719,20 @@ async function makeAuthenticatedRequest(url) {
                 if (requestTimeout) {
                     clearTimeout(requestTimeout);
                 }
+                console.error('❌ Flight data request error:', error.message);
                 reject(error);
             });
 
             // Set up timeout
             requestTimeout = setTimeout(() => {
                 request.destroy();
-                reject(new Error(`Request timeout after ${timeout}ms`));
+                reject(new Error(`Flight data request timeout after ${timeout}ms`));
             }, timeout);
 
             // Handle socket timeout
             request.on('timeout', () => {
                 request.destroy();
-                reject(new Error('Request socket timeout'));
+                reject(new Error('Flight data request socket timeout'));
             });
 
         } catch (error) {
