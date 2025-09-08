@@ -7,6 +7,7 @@ import cors from 'cors';
 import https from 'https';
 // Before: const querystring = require('querystring');
 import querystring from 'querystring';
+import dns from 'dns';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
@@ -505,17 +506,23 @@ async function getAccessToken() {
     return new Promise((resolve, reject) => {
         // Check if we have a valid token
         if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
+            console.log('🔄 Using cached OAuth2 token');
             resolve(accessToken);
             return;
         }
 
         console.log('🔑 Requesting new OAuth2 access token...');
+        console.log('🌐 Environment: ' + (process.env.NODE_ENV || 'development'));
+        console.log('🆔 Client ID: ' + OPENSKY_CLIENT_ID);
 
         const postData = querystring.stringify({
             'grant_type': 'client_credentials',
             'client_id': OPENSKY_CLIENT_ID,
             'client_secret': OPENSKY_CLIENT_SECRET
         });
+
+        // Reduced timeout for faster failure detection
+        const REQUEST_TIMEOUT = 10000; // 10 seconds
 
         const options = {
             hostname: 'auth.opensky-network.org',
@@ -525,12 +532,18 @@ async function getAccessToken() {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Content-Length': Buffer.byteLength(postData),
-                'User-Agent': 'Earth Observation System/1.0'
-            },
-            timeout: 20000 // 20 second timeout
+                'User-Agent': 'Earth Observation System/2.0',
+                'Connection': 'close' // Ensure connection is closed after request
+            }
         };
 
+        const startTime = Date.now();
+        console.log('📤 Sending OAuth2 request to auth.opensky-network.org...');
+
         const req = https.request(options, (res) => {
+            const responseTime = Date.now() - startTime;
+            console.log(`📊 OAuth2 response received in ${responseTime}ms - Status: ${res.statusCode}`);
+            
             let data = '';
 
             res.on('data', (chunk) => {
@@ -541,39 +554,75 @@ async function getAccessToken() {
                 try {
                     if (res.statusCode === 200) {
                         const tokenResponse = JSON.parse(data);
-                        accessToken = tokenResponse.access_token;
-                        
-                        // Set token expiry (usually expires_in is in seconds)
-                        const expiresIn = tokenResponse.expires_in || 3600; // Default to 1 hour
-                        tokenExpiry = Date.now() + (expiresIn * 1000) - 60000; // Subtract 1 minute for safety
-                        
-                        console.log('✅ OAuth2 token obtained successfully');
-                        resolve(accessToken);
+                        if (tokenResponse.access_token) {
+                            accessToken = tokenResponse.access_token;
+                            
+                            // Set token expiry (usually expires_in is in seconds)
+                            const expiresIn = tokenResponse.expires_in || 1800; // Default to 30 minutes
+                            tokenExpiry = Date.now() + (expiresIn * 1000) - 120000; // Subtract 2 minutes for safety
+                            
+                            console.log('✅ OAuth2 token obtained successfully');
+                            console.log(`⏰ Token expires in ${expiresIn} seconds`);
+                            resolve(accessToken);
+                        } else {
+                            console.error('❌ OAuth2 response missing access_token:', data);
+                            reject(new Error('OAuth2 response missing access_token'));
+                        }
                     } else {
-                        console.error('❌ OAuth2 token request failed:', res.statusCode, data);
-                        reject(new Error(`OAuth2 failed: ${res.statusCode} ${data}`));
+                        console.error('❌ OAuth2 token request failed:', res.statusCode);
+                        console.error('📄 Response body:', data);
+                        reject(new Error(`OAuth2 failed: HTTP ${res.statusCode} - ${data}`));
                     }
                 } catch (error) {
-                    console.error('❌ Error parsing OAuth2 token response:', error);
-                    reject(error);
+                    console.error('❌ Error parsing OAuth2 token response:', error.message);
+                    console.error('📄 Raw response:', data);
+                    reject(new Error(`OAuth2 JSON parse error: ${error.message}`));
                 }
             });
         });
 
         req.on('error', (error) => {
-            console.error('❌ OAuth2 token request error:', error.message);
-            reject(error);
+            const responseTime = Date.now() - startTime;
+            console.error(`❌ OAuth2 token request error after ${responseTime}ms:`, error.message);
+            console.error('🔍 Error code:', error.code);
+            console.error('🔍 Error type:', error.constructor.name);
+            
+            // Provide more specific error messages
+            let errorMessage = 'OAuth2 request failed';
+            if (error.code === 'ENOTFOUND') {
+                errorMessage = 'DNS resolution failed for auth.opensky-network.org';
+            } else if (error.code === 'ECONNREFUSED') {
+                errorMessage = 'Connection refused by auth.opensky-network.org';
+            } else if (error.code === 'ETIMEDOUT') {
+                errorMessage = 'Connection timeout to auth.opensky-network.org';
+            } else if (error.code === 'ECONNRESET') {
+                errorMessage = 'Connection reset by auth.opensky-network.org';
+            }
+            
+            reject(new Error(`${errorMessage}: ${error.message}`));
         });
 
         req.on('timeout', () => {
+            const responseTime = Date.now() - startTime;
+            console.error(`❌ OAuth2 token request timeout after ${responseTime}ms`);
             req.destroy();
-            console.error('❌ OAuth2 token request timeout');
-            reject(new Error('OAuth2 request timeout'));
+            reject(new Error(`OAuth2 request timeout after ${REQUEST_TIMEOUT}ms`));
         });
 
-        req.setTimeout(20000, () => {
+        // Set timeout
+        req.setTimeout(REQUEST_TIMEOUT, () => {
+            const responseTime = Date.now() - startTime;
+            console.error(`❌ OAuth2 request timeout (setTimeout) after ${responseTime}ms`);
             req.destroy();
-            reject(new Error('OAuth2 request timeout after 20 seconds'));
+            reject(new Error(`OAuth2 request timeout after ${REQUEST_TIMEOUT}ms`));
+        });
+
+        // Handle socket errors
+        req.on('socket', (socket) => {
+            socket.on('timeout', () => {
+                console.error('❌ OAuth2 socket timeout');
+                req.destroy();
+            });
         });
 
         req.write(postData);
@@ -992,7 +1041,13 @@ app.get('/api/health', (req, res) => {
 app.get('/api/test-oauth2', async (req, res) => {
     try {
         console.log('🧪 Testing OAuth2 connectivity...');
+        console.log('🌐 Environment:', process.env.NODE_ENV || 'development');
+        console.log('🆔 Client ID:', OPENSKY_CLIENT_ID);
+        console.log('🔐 Client Secret Length:', OPENSKY_CLIENT_SECRET.length);
+        
+        const startTime = Date.now();
         const token = await getAccessToken();
+        const endTime = Date.now();
         
         res.json({
             success: true,
@@ -1000,21 +1055,131 @@ app.get('/api/test-oauth2', async (req, res) => {
             token_obtained: true,
             token_length: token ? token.length : 0,
             token_expiry: tokenExpiry ? new Date(tokenExpiry).toISOString() : null,
-            timestamp: new Date().toISOString()
+            response_time_ms: endTime - startTime,
+            timestamp: new Date().toISOString(),
+            environment: process.env.NODE_ENV || 'development',
+            client_id: OPENSKY_CLIENT_ID
         });
     } catch (error) {
         console.error('❌ OAuth2 test failed:', error.message);
+        console.error('🔍 Error details:', error);
+        
         res.status(500).json({
             success: false,
             error: 'OAuth2 authentication failed',
-            message: error.message,
+            error_message: error.message,
+            error_code: error.code || 'UNKNOWN',
             timestamp: new Date().toISOString(),
+            environment: process.env.NODE_ENV || 'development',
+            client_id: OPENSKY_CLIENT_ID,
             troubleshooting: [
                 'Check network connectivity to auth.opensky-network.org',
                 'Verify OAuth2 credentials are correct',
                 'Ensure firewall allows HTTPS connections',
-                'Try again as this might be a temporary network issue'
+                'Try again as this might be a temporary network issue',
+                'Check if Render allows outbound HTTPS to external OAuth providers'
             ]
+        });
+    }
+});
+
+// Network diagnostic endpoint
+app.get('/api/diagnose-network', async (req, res) => {
+    const results = {
+        hostname: 'auth.opensky-network.org',
+        timestamp: new Date().toISOString(),
+        tests: {}
+    };
+    
+    try {
+        console.log('🔍 Running network diagnostics for OAuth2...');
+        
+        // Test 1: DNS Resolution
+        try {
+            const dnsStart = Date.now();
+            const dnsResult = await new Promise((resolve, reject) => {
+                dns.lookup('auth.opensky-network.org', (err, address, family) => {
+                    if (err) reject(err);
+                    else resolve({ address, family });
+                });
+            });
+            results.tests.dns = {
+                success: true,
+                response_time_ms: Date.now() - dnsStart,
+                ip_address: dnsResult.address,
+                family: dnsResult.family
+            };
+            console.log('✅ DNS Resolution successful:', dnsResult);
+        } catch (error) {
+            results.tests.dns = {
+                success: false,
+                error: error.message,
+                error_code: error.code
+            };
+            console.log('❌ DNS Resolution failed:', error.message);
+        }
+        
+        // Test 2: Basic HTTPS Connection
+        try {
+            const connectStart = Date.now();
+            await new Promise((resolve, reject) => {
+                const req = https.request({
+                    hostname: 'auth.opensky-network.org',
+                    port: 443,
+                    path: '/',
+                    method: 'GET',
+                    timeout: 5000
+                }, (res) => {
+                    results.tests.https_connection = {
+                        success: true,
+                        response_time_ms: Date.now() - connectStart,
+                        status_code: res.statusCode,
+                        headers_received: true
+                    };
+                    console.log('✅ HTTPS Connection successful');
+                    resolve();
+                });
+                
+                req.on('error', (error) => {
+                    results.tests.https_connection = {
+                        success: false,
+                        response_time_ms: Date.now() - connectStart,
+                        error: error.message,
+                        error_code: error.code
+                    };
+                    reject(error);
+                });
+                
+                req.on('timeout', () => {
+                    req.destroy();
+                    results.tests.https_connection = {
+                        success: false,
+                        response_time_ms: Date.now() - connectStart,
+                        error: 'Connection timeout'
+                    };
+                    reject(new Error('Connection timeout'));
+                });
+                
+                req.setTimeout(5000);
+                req.end();
+            });
+        } catch (error) {
+            console.log('❌ HTTPS Connection failed:', error.message);
+        }
+        
+        res.json({
+            success: true,
+            message: 'Network diagnostics completed',
+            ...results
+        });
+        
+    } catch (error) {
+        console.error('❌ Network diagnostics failed:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Network diagnostics failed',
+            error_message: error.message,
+            ...results
         });
     }
 });
