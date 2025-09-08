@@ -115,3 +115,27 @@ export const updateUserProfile = async (profileData, token) => {
 
   return await response.json();
 };
+
+// ------------------- UPDATE SUBSCRIPTION -------------------
+export const updateUserSubscription = async (subscriptionData, token) => {
+  const response = await fetch(`${API_BASE_URL}/api/user/subscription`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(subscriptionData)
+  });
+
+  if (!response.ok) {
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = {};
+    }
+    throw new Error(errorData.message || 'Subscription update failed');
+  }
+
+  return await response.json();
+};

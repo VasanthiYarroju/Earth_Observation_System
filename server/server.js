@@ -88,7 +88,18 @@ const userSchema = new mongoose.Schema({
   domains: [{ type: String }],
   otp: String,
   otpExpiry: Date,
-  otpVerified: { type: Boolean, default: false }
+  otpVerified: { type: Boolean, default: false },
+  subscription: {
+    plan: String,
+    planKey: String,
+    status: { type: String, enum: ['active', 'inactive', 'cancelled'], default: 'inactive' },
+    startDate: Date,
+    endDate: Date,
+    features: [String],
+    price: Number,
+    billingCycle: { type: String, enum: ['monthly', 'yearly'] },
+    activatedAt: Date
+  }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -280,7 +291,7 @@ app.post('/api/auth/login', async (req, res) => {
 
   const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET || 'secret123', { expiresIn: '24h' });
   
-  // Include user data in the response
+  // Include user data in the response with subscription information
   return res.json({ 
     token, 
     message: 'Login successful',
@@ -288,7 +299,8 @@ app.post('/api/auth/login', async (req, res) => {
       email: user.email,
       name: user.name,
       phone: user.phone || '',
-      domains: user.domains || []
+      domains: user.domains || [],
+      subscription: user.subscription || null
     } 
   });
 });
@@ -317,12 +329,51 @@ app.put('/api/user/profile', authenticateToken, async (req, res) => {
         email: user.email,
         name: user.name,
         phone: user.phone || '',
-        domains: user.domains || []
+        domains: user.domains || [],
+        subscription: user.subscription || null
       } 
     });
   } catch (err) {
     console.error('❌ Error updating user profile:', err);
     res.status(500).json({ message: 'Failed to update profile', error: err.message });
+  }
+});
+
+// Update user subscription
+app.put('/api/user/subscription', authenticateToken, async (req, res) => {
+  try {
+    const subscriptionData = req.body;
+    const email = req.user.email;
+    
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Update subscription data
+    user.subscription = {
+      ...subscriptionData,
+      status: 'active',
+      activatedAt: new Date()
+    };
+    
+    await user.save();
+    
+    console.log(`✅ Subscription updated for user ${email}:`, user.subscription);
+    
+    return res.json({ 
+      message: 'Subscription updated successfully',
+      user: {
+        email: user.email,
+        name: user.name,
+        phone: user.phone || '',
+        domains: user.domains || [],
+        subscription: user.subscription
+      } 
+    });
+  } catch (err) {
+    console.error('❌ Error updating user subscription:', err);
+    res.status(500).json({ message: 'Failed to update subscription', error: err.message });
   }
 });
 

@@ -250,7 +250,7 @@ const SubscriptionPage = () => {
         billingCycle: billingType
       };
       
-      updateSubscription(subscriptionData);
+      await updateSubscription(subscriptionData);
       
       setCurrentStep(4);
       

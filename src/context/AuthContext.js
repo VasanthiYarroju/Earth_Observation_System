@@ -1,6 +1,6 @@
 // src/context/AuthContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loginUser, registerUser, updateUserProfile } from '../services/api';
+import { loginUser, registerUser, updateUserProfile, updateUserSubscription } from '../services/api';
 import React from 'react';
 
 
@@ -65,12 +65,6 @@ export function AuthProvider({ children }) {
       
       // Store complete user data including domains and subscription
       const userData = response.user || { email };
-      
-      // Preserve any existing subscription info if it exists in localStorage
-      const existingUser = JSON.parse(localStorage.getItem('user') || '{}');
-      if (existingUser.subscription && !userData.subscription) {
-        userData.subscription = existingUser.subscription;
-      }
       
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
@@ -145,14 +139,32 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const updateSubscription = (subscriptionData) => {
+  const updateSubscription = async (subscriptionData) => {
     try {
       console.log('AuthContext: Updating subscription with data:', subscriptionData);
       
-      // Get current user data
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required');
+      }
+      
+      // Call backend API to save subscription
+      const response = await updateUserSubscription(subscriptionData, token);
+      
+      // Update local user data with the response
+      const updatedUser = response.user;
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      
+      console.log('AuthContext: Subscription updated successfully via backend', updatedUser.subscription);
+      return updatedUser;
+    } catch (error) {
+      console.error('AuthContext: Subscription update error:', error);
+      
+      // Fallback to local storage if backend fails
+      console.log('AuthContext: Falling back to local storage for subscription update');
       const currentUser = user || JSON.parse(localStorage.getItem('user') || '{}');
       
-      // Update user with subscription info
       const updatedUser = {
         ...currentUser,
         subscription: {
@@ -162,15 +174,10 @@ export function AuthProvider({ children }) {
         }
       };
       
-      // Save to localStorage and update state
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       
-      console.log('AuthContext: Subscription updated successfully', updatedUser.subscription);
       return updatedUser;
-    } catch (error) {
-      console.error('AuthContext: Subscription update error:', error);
-      throw error;
     }
   };
 
