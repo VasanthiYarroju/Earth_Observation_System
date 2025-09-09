@@ -181,7 +181,7 @@ const handleSubmit = async (e) => {
       alignItems: 'center',
       zIndex: 1000,
       backdropFilter: 'blur(5px)'
-    }}>
+    }}
       <div style={{
         backgroundColor: '#0a192f',
         padding: '2rem',
