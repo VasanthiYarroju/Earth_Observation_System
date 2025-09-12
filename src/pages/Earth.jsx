@@ -1324,8 +1324,8 @@ function HeroSection({ onGetStarted }) {
           transition={{ duration: 0.8, delay: 0.6 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          // If authenticated, go to /home (dashboard). Otherwise, trigger scroll.
-          onClick={isAuthenticated ? () => navigate('/home') : onGetStarted}
+          // Navigate to flights page when clicked
+          onClick={() => navigate('/flights')}
           style={{
             padding: '1rem 2.5rem',
             background: 'rgba(37, 91, 145, 0.7)',
@@ -1340,7 +1340,7 @@ function HeroSection({ onGetStarted }) {
             boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
           }}
         >
-          {isAuthenticated ? 'Go to Dashboard' : 'Begin Exploration'}
+          Begin Exploration
         </motion.button>
       </div>
 
