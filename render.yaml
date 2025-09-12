@@ -2,6 +2,7 @@ services:
   - type: web
     name: earth-observation-system
     env: node
+    region: ohio
     buildCommand: cd server && npm install
     startCommand: cd server && npm start
     envVars:
