@@ -1325,7 +1325,10 @@ function HeroSection({ onGetStarted }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           // Navigate to flights page when clicked
-          onClick={() => navigate('/flights')}
+          onClick={() => {
+            console.log('Begin Exploration clicked, navigating to /flights');
+            navigate('/flights');
+          }}
           style={{
             padding: '1rem 2.5rem',
             background: 'rgba(37, 91, 145, 0.7)',

@@ -36,14 +36,10 @@ function App() {
         }
       />
 
-      {/* Protected Flights Page */}
+      {/* Public Flights Page */}
       <Route 
         path="/flights" 
-        element={
-          <PrivateRoute redirectPath="/earth">
-            <FlightsPage />
-          </PrivateRoute>
-        }
+        element={<FlightsPage />}
       />
 
       {/* Protected Profile Page */}
