@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://earth-observationsystem.onrender.com';
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://earth-observation-system-3.onrender.com';
 
 // Token refresh mechanism
 const isTokenExpired = () => {
